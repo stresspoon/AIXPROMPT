@@ -91,17 +91,16 @@
     const uid = $('#uid');
     const pwd = $('#pwd');
 
+    function getSelectedFile(){ return file && file.files && file.files[0]; }
     function setPreview(){
       preview.innerHTML = '';
-    const f = ()=> file.files && file.files[0];
-    file && file.addEventListener('change', ()=>{
-      setPreview();
-      const imgf = f();
-      if(!imgf) return;
+      const imgf = getSelectedFile();
+      if(!imgf){ preview.innerHTML = '<span class="note">이미지 선택 시 미리보기</span>'; return; }
       const img = document.createElement('img');
       img.src = URL.createObjectURL(imgf);
       preview.appendChild(img);
-    });
+    }
+    if(file){ file.addEventListener('change', setPreview); }
 
     function getAuth(){
       return localStorage.getItem('AIX_AUTH') || '';
