@@ -16,9 +16,11 @@ module.exports = async function handler(req, res){
     const chunks = []; await new Promise((resolve)=>{ req.on('data',(c)=>chunks.push(c)); req.on('end', resolve); });
     let body = {}; try{ body = JSON.parse(Buffer.concat(chunks).toString('utf8')); }catch{ body = {}; }
     /**
-     * body.items: Array<{ prompt: string, imageUrl?: string }>
+     * body.items: Array<{ prompt: string, imageUrl?: string, imageIndex?: number }>
+     * body.imageBase64List: Array<{ base64: string|dataURL, name?: string, mime?: string }>
      */
     const itemsInput = Array.isArray(body.items) ? body.items : [];
+    const imageBase64List = Array.isArray(body.imageBase64List) ? body.imageBase64List : [];
     if(itemsInput.length === 0){ res.statusCode = 400; return res.end('No items'); }
 
     const repo = process.env.REPO_SLUG || 'stresspoon/AIXPROMPT';
@@ -45,6 +47,17 @@ module.exports = async function handler(req, res){
       if(/webp/.test(ct)) return 'webp';
       return 'bin';
     }
+    function toBase64FromDataUrlOrRaw(input){
+      if(!input) return null;
+      const m = String(input).match(/^data:[^;]+;base64,(.*)$/);
+      return m ? m[1] : String(input);
+    }
+    function safeExt(mime, name){
+      const byMime = mime === 'image/png' ? 'png' : (mime === 'image/jpeg' ? 'jpg' : (mime === 'image/webp' ? 'webp' : 'bin'));
+      const byName = (String(name||'').split('.').pop() || '').toLowerCase();
+      if(['png','jpg','jpeg','webp'].includes(byName)) return byName === 'jpeg' ? 'jpg' : byName;
+      return byMime;
+    }
 
     async function uploadFromUrl(imageUrl){
       if(!imageUrl) return '';
@@ -59,10 +72,26 @@ module.exports = async function handler(req, res){
       await ghPut(path, base64, `feat(bulk): add image ${safe}`);
       return `./public/images/${ts}-${safe}.${ext}`;
     }
+    async function uploadFromBase64(entry){
+      if(!entry || !entry.base64) return '';
+      const base64 = toBase64FromDataUrlOrRaw(entry.base64);
+      const now = new Date(); const ts = now.toISOString().replace(/[-:T.Z]/g,'').slice(0,14);
+      const ext = safeExt(entry.mime || '', entry.name || 'image');
+      const safe = String(entry.name || 'image').replace(/[^a-zA-Z0-9._-]/g,'_').replace(/\.(png|jpg|jpeg|webp)$/i,'');
+      const path = `public/images/${ts}-${safe}.${ext}`;
+      await ghPut(path, base64, `feat(bulk): add image ${safe}`);
+      return `./public/images/${ts}-${safe}.${ext}`;
+    }
 
     const meta = await ghGet('data/prompts.json');
     let items = []; let sha = undefined;
     if(meta){ sha = meta.sha; try{ items = JSON.parse(Buffer.from(meta.content.replace(/\n/g,''),'base64').toString('utf8')); }catch{ items=[]; } }
+
+    // Pre-upload local base64 images if provided
+    const uploadedLocalImages = [];
+    for(const entry of imageBase64List){
+      try{ const p = await uploadFromBase64(entry); uploadedLocalImages.push(p); }catch(e){ uploadedLocalImages.push(''); }
+    }
 
     // Process inputs sequentially (keep it simple and safe)
     for(const it of itemsInput){
@@ -71,6 +100,10 @@ module.exports = async function handler(req, res){
       let imagePath = '';
       if(it.imageUrl){
         try{ imagePath = await uploadFromUrl(it.imageUrl); }catch(e){ imagePath = ''; }
+      } else if (typeof it.imageIndex === 'number' && uploadedLocalImages[it.imageIndex]){
+        imagePath = uploadedLocalImages[it.imageIndex];
+      } else if (uploadedLocalImages.length === 1){
+        imagePath = uploadedLocalImages[0];
       }
       items.push({ image: imagePath || (items[0]?.image || ''), prompt });
     }
