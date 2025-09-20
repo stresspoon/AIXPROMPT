@@ -157,29 +157,7 @@
         </div>
       </div>
 
-      <div id="bulkCard" class="card" style="display:none; margin-top:12px">
-        <div class="body">
-          <div class="title">대량등록</div>
-          <div class="row">
-            <label>CSV 붙여넣기</label>
-            <textarea id="bulkCsv" placeholder="prompt,imageUrl,model (헤더 없이 행마다)
-Example prompt 1,https://example.com/a.jpg
-Example prompt 2,,nanobanana"></textarea>
-          </div>
-          <div class="row">
-            <label>로컬 이미지</label>
-            <input id="bulkFiles" type="file" multiple accept="image/*" />
-          </div>
-          <div class="row">
-            <label>라인별(프롬프트만)</label>
-            <textarea id="bulkLines" placeholder="한 줄당 하나의 프롬프트"></textarea>
-          </div>
-          <div class="actions" style="display:flex; gap:10px; margin-top:12px">
-            <button id="bulkSubmit">대량등록 실행</button>
-          </div>
-          <div class="note">CSV가 우선 적용되며, 없으면 라인별 입력을 사용합니다. 이미지 URL은 원격에서 가져와 `public/images/`에 저장됩니다.</div>
-        </div>
-      </div>
+      
     </section>
 
     <section class="grid" id="grid"></section>
@@ -204,10 +182,7 @@ Example prompt 2,,nanobanana"></textarea>
     const preview = document.getElementById('preview');
     const uid = document.getElementById('uid');
     const pwd = document.getElementById('pwd');
-    const bulkCard = document.getElementById('bulkCard');
-    const bulkCsv = document.getElementById('bulkCsv');
-    const bulkLines = document.getElementById('bulkLines');
-    const bulkFiles = document.getElementById('bulkFiles');
+    
     let isAdmin = false;
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
@@ -330,7 +305,7 @@ Example prompt 2,,nanobanana"></textarea>
       adminWrap.style.display = forceShow || isAdmin ? '' : 'none';
       loginCard.style.display = isAdmin ? 'none' : '';
       formCard.style.display = isAdmin ? '' : 'none';
-      if(bulkCard) bulkCard.style.display = isAdmin ? '' : 'none';
+      
       if(!isAdmin){ if(uid) uid.value=''; if(pwd) pwd.value=''; }
       await load();
     }
@@ -391,46 +366,7 @@ Example prompt 2,,nanobanana"></textarea>
       if(resp.ok){ alert('전체 삭제 완료'); await load(); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
     });
 
-    function parseCsv(text){
-      const lines = text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-      const out = [];
-      for(const line of lines){
-        const parts = line.split(',');
-        const prompt = (parts[0] || '').trim();
-        const imageUrl = (parts[1] || '').trim();
-        const model = (parts[2] || '').trim();
-        if(prompt) out.push({ prompt, imageUrl: imageUrl || undefined, model: model || undefined });
-      }
-      return out;
-    }
-    function parseLines(text){
-      return text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).map(p=>({ prompt:p }));
-    }
-    document.getElementById('bulkSubmit')?.addEventListener('click', async ()=>{
-      const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
-      const items = bulkCsv && bulkCsv.value.trim() ? parseCsv(bulkCsv.value) : parseLines((bulkLines && bulkLines.value) || '');
-      // imageIndex를 파일 순서와 매핑 (라인 입력에서는 단일 파일이면 0번으로 매핑)
-      const images = [];
-      if(bulkFiles && bulkFiles.files && bulkFiles.files.length){
-        for(const f of bulkFiles.files){
-          const buf = await f.arrayBuffer();
-          let binary=''; const bytes=new Uint8Array(buf); for(let i=0;i<bytes.length;i++) binary+=String.fromCharCode(bytes[i]);
-          images.push({ base64: btoa(binary), name: f.name, mime: f.type });
-        }
-        if(items.length && images.length && items.every(it=>!it.imageUrl)){
-          // 각 항목에 imageIndex 지정(개수 다르면 순환)
-          for(let i=0;i<items.length;i++) items[i].imageIndex = i % images.length;
-        }
-      }
-      if(items.length === 0){ alert('추가할 항목이 없습니다.'); return; }
-      const payload = { items };
-      if(images.length) payload.imageBase64List = images;
-      const resp = await fetch('/api/bulk-append', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify(payload) });
-      if(!resp.ok){ const t = await resp.text(); alert('대량등록 실패: '+t); return; }
-      alert('대량등록 완료! 잠시 후 반영됩니다.');
-      if(bulkCsv) bulkCsv.value=''; if(bulkLines) bulkLines.value=''; if(bulkFiles) bulkFiles.value='';
-      await load();
-    });
+    
 
     // 전체 복사 기능 제거
 

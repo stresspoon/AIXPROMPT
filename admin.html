@@ -44,8 +44,10 @@
     .ag-body{ padding:12px; display:flex; flex-direction:column; gap:8px }
     .ag-title{ font-size:14px; font-weight:700 }
     .ag-prompt{ color:var(--muted); font-size:12px; line-height:1.6; max-height:3.2em; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical }
-    .ag-del{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(19,19,19,.5); color:#fff; font-weight:800; opacity:0; transition:opacity .15s ease; cursor:pointer; user-select:none }
-    .ag-media:hover .ag-del{ opacity:1 }
+    .ag-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(19,19,19,.5); color:#fff; opacity:0; transition:opacity .15s ease; user-select:none }
+    .ag-media:hover .ag-overlay{ opacity:1 }
+    .ag-tool{ pointer-events:auto; background:#2a2a2a; color:#fff; border:1px solid var(--stroke); border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer; box-shadow:var(--shadow) }
+    .ag-tool.del{ background:#ff4d4d; border-color:#ff4d4d }
     @media (min-width:760px){ .ag-card{ grid-column: span 6 } }
     @media (min-width:1080px){ .ag-card{ grid-column: span 4 } }
   </style>
@@ -267,7 +269,11 @@
         <div class="ag-media">
           <img src="${item.image}" alt="card ${index+1}" />
           <span class="ag-badge">#${index+1}</span>
-          <div class="ag-del" role="button" aria-label="카드 삭제">삭제</div>
+          <div class="ag-overlay">
+            <button class="ag-tool" data-model="nanobanana">🍌</button>
+            <button class="ag-tool" data-model="seedream4">💙</button>
+            <button class="ag-tool del" data-action="delete">삭제</button>
+          </div>
         </div>
         <div class="ag-body">
           ${item.title ? `<div class=\"ag-title\">${item.title}</div>` : ''}
@@ -280,15 +286,16 @@
             </span>
           </div>
         </div>`;
-      const del = el.querySelector('.ag-del');
-      del.addEventListener('click', async ()=>{
+      el.querySelector('[data-action="delete"]').addEventListener('click', async (ev)=>{
+        ev.stopPropagation();
         const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
         if(!confirm(`#${index+1} 카드를 삭제할까요?`)) return;
         const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1 }) });
         if(resp.ok){ loadGrid(); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
       });
-      el.querySelectorAll('.ag-set').forEach(btn=>{
-        btn.addEventListener('click', async ()=>{
+      el.querySelectorAll('[data-model]').forEach(btn=>{
+        btn.addEventListener('click', async (ev)=>{
+          ev.stopPropagation();
           const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
           const model = btn.getAttribute('data-model');
           const resp = await fetch('/api/update-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1, model }) });
