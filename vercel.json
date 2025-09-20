@@ -3,10 +3,9 @@
   "buildCommand": "",
   "outputDirectory": ".",
   "framework": null,
-  "routes": [
-    { "src": "/", "dest": "/index.html" },
-    { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/admin/", "dest": "/admin.html" }
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/admin.html" }
   ],
   "cleanUrls": true,
   "trailingSlash": false
