@@ -30,6 +30,7 @@
     .preview{ width:100%; border:1px dashed var(--stroke); border-radius:12px; overflow:hidden; display:grid; place-items:center; aspect-ratio:4/5; background:#0f0f0f }
     .preview img{ width:100%; height:100%; object-fit:cover }
     .danger{ color:#ff6b6b }
+    .preview.drop{ border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,61,0,.25) inset }
     /* 관리자 갤러리 */
     .ag-grid{ display:grid; grid-template-columns:repeat(12,1fr); gap:18px; margin-top:16px }
     .ag-card{ grid-column: span 12; background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:grid; grid-template-columns:1fr }
@@ -120,6 +121,31 @@
       preview.appendChild(img);
     }
     if(file){ file.addEventListener('change', setPreview); }
+
+    // Drag & drop to preview
+    function handleFiles(files){
+      if(!files || !files.length) return;
+      file.files = files; // set to input for consistency
+      setPreview();
+    }
+    ['dragenter','dragover'].forEach(evt=> preview.addEventListener(evt, (e)=>{ e.preventDefault(); e.stopPropagation(); preview.classList.add('drop'); }));
+    ;['dragleave','drop'].forEach(evt=> preview.addEventListener(evt, (e)=>{ e.preventDefault(); e.stopPropagation(); preview.classList.remove('drop'); }));
+    preview.addEventListener('drop', (e)=>{
+      const dt = e.dataTransfer; if(!dt) return;
+      if(dt.files && dt.files.length){ handleFiles(dt.files); }
+    });
+    // Paste from clipboard
+    document.addEventListener('paste', (e)=>{
+      const items = e.clipboardData && e.clipboardData.items; if(!items) return;
+      for(const it of items){
+        if(it.kind === 'file'){
+          const f = it.getAsFile();
+          if(f && f.type.startsWith('image/')){
+            const dt = new DataTransfer(); dt.items.add(f); handleFiles(dt.files); break;
+          }
+        }
+      }
+    });
 
     function getAuth(){
       return localStorage.getItem('AIX_AUTH') || '';
