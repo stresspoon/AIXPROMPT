@@ -75,6 +75,7 @@
         <button id="appendOnly" class="secondary">이미지 없이 JSON만 추가</button>
         <button id="dangerClear" class="secondary danger" title="주의: 전체 JSON 초기화">데이터 초기화</button>
         <button id="logout" class="secondary">로그아웃</button>
+        <button id="loadList" class="secondary">목록 불러오기</button>
       </div>
     </div>
 
@@ -163,8 +164,22 @@
     document.getElementById('dangerClear').addEventListener('click', async()=>{
       if(!confirm('정말 모든 데이터를 초기화하시겠어요? 이 작업은 되돌릴 수 없습니다.')) return;
       const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
-      const resp = await fetch('/api/append-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ prompt: '' }) });
-      if(resp.ok){ alert('초기화는 별도 API가 필요합니다. 추후 제공.'); } else { alert('권한 없음'); }
+      const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ reset: true }) });
+      if(resp.ok){ alert('전체 삭제 완료'); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
+    });
+
+    document.getElementById('loadList').addEventListener('click', async()=>{
+      const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
+      const r = await fetch('/api/list-cards', { headers:{ 'Authorization':'Basic '+token } });
+      if(!r.ok){ alert('목록 불러오기 실패'); return; }
+      const { items } = await r.json();
+      const list = items.map(it=> `#${it.index} ${it.image ? '🖼' : ''} ${it.prompt}`).join('\n');
+      const idx = prompt(`삭제할 번호를 입력하세요.\n\n${list}\n\n번호 입력:`);
+      if(!idx) return;
+      const n = Number(idx);
+      if(!Number.isFinite(n) || n < 1){ alert('번호가 올바르지 않습니다.'); return; }
+      const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: n }) });
+      if(resp.ok){ alert(`#${n} 삭제 완료`); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
     });
 
     ensureAuthUI();
