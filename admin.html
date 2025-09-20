@@ -180,6 +180,31 @@
     });
     document.getElementById('logout').addEventListener('click', ()=>{ clearAuth(); ensureAuthUI(); });
 
+    // Image compress helper to avoid 413 (payload too large)
+    function fileToDataURL(file){
+      return new Promise((resolve,reject)=>{ const fr=new FileReader(); fr.onload=()=>resolve(fr.result); fr.onerror=reject; fr.readAsDataURL(file); });
+    }
+    function dataURLToImage(dataURL){
+      return new Promise((resolve,reject)=>{ const img=new Image(); img.onload=()=>resolve(img); img.onerror=reject; img.src=dataURL; });
+    }
+    function blobToBase64(blob){
+      return new Promise((resolve,reject)=>{ const fr=new FileReader(); fr.onload=()=>{ const s=String(fr.result||''); const m=s.match(/^data:[^;]+;base64,(.*)$/); resolve(m?m[1]:s); }; fr.onerror=reject; fr.readAsDataURL(blob); });
+    }
+    async function compressImageFile(file, opts={ maxEdge: 1920, quality: 0.85, type: 'image/jpeg' }){
+      const dataURL = await fileToDataURL(file);
+      const img = await dataURLToImage(dataURL);
+      const maxEdge = opts.maxEdge || 1920; const qualityBase = opts.quality || 0.85; const outType = opts.type || 'image/jpeg';
+      let w = img.width, h = img.height; const ratio = Math.min(1, maxEdge / Math.max(w,h)); w = Math.round(w*ratio); h = Math.round(h*ratio);
+      const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, w, h);
+      let q = qualityBase; let blob = await new Promise(res=> canvas.toBlob(res, outType, q));
+      // If still large, reduce quality progressively
+      const MAX_BYTES = 4.2 * 1024 * 1024; // ~4.2MB to stay under Vercel limits
+      while(blob && blob.size > MAX_BYTES && q > 0.5){ q -= 0.1; blob = await new Promise(res=> canvas.toBlob(res, outType, q)); }
+      const base64 = await blobToBase64(blob);
+      const name = (file.name || 'image').replace(/\.(png|jpg|jpeg|webp)$/i,'') + (outType==='image/jpeg'?'.jpg':outType==='image/webp'?'.webp':'.bin');
+      return { base64, mime: outType, name };
+    }
+
     async function saveItem(appendImage){
       if(!promptEl.value.trim()){ alert('프롬프트를 입력하세요.'); return; }
       const token = getAuth();
@@ -187,11 +212,13 @@
       let imageBase64 = null, imageName='', imageMime='application/octet-stream';
       const selected = getSelectedFile();
       if(appendImage && selected){
-        imageName = selected.name || 'image';
-        imageMime = selected.type || 'application/octet-stream';
-        const buf = await selected.arrayBuffer();
-        let binary=''; const bytes = new Uint8Array(buf); for(let i=0;i<bytes.length;i++) binary += String.fromCharCode(bytes[i]);
-        imageBase64 = btoa(binary);
+        try{
+          const out = await compressImageFile(selected);
+          imageBase64 = out.base64; imageName = out.name; imageMime = out.mime;
+        }catch(err){
+          // fallback: raw
+          const buf = await selected.arrayBuffer(); let binary=''; const bytes=new Uint8Array(buf); for(let i=0;i<bytes.length;i++) binary+=String.fromCharCode(bytes[i]); imageBase64=btoa(binary); imageName=selected.name; imageMime=selected.type||'application/octet-stream';
+        }
       }
       const resp = await fetch('/api/append-card', {
         method:'POST',
