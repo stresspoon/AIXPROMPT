@@ -33,5 +33,10 @@
     "image": "./public/images/20250920110856-b1.jpg",
     "prompt": "A cozy studio portrait of a man in a knitted sweater, seated on a chair under a warm standing lamp. Soft ambient lighting creates a relaxed and intimate mood. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens, cinematic tones.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250920113622-image.jpg",
+    "prompt": "A stylish studio portrait of a man in a black suit and sunglasses, leaning casually against a wall while holding a coffee cup. Background lit with dramatic purple and amber lighting, creating a fashion editorial vibe. Captured on a Canon EOS R5 with a 35mm f/1.4 lens.",
+    "model": "seedream4"
   }
 ]
