@@ -48,6 +48,7 @@
     .ag-media:hover .ag-overlay{ opacity:1 }
     .ag-tool{ pointer-events:auto; background:#2a2a2a; color:#fff; border:1px solid var(--stroke); border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer; box-shadow:var(--shadow) }
     .ag-tool.del{ background:#ff4d4d; border-color:#ff4d4d }
+    .ag-tool[disabled]{ opacity:.6; cursor:progress }
     @media (min-width:760px){ .ag-card{ grid-column: span 6 } }
     @media (min-width:1080px){ .ag-card{ grid-column: span 4 } }
   </style>
@@ -278,13 +279,7 @@
         <div class="ag-body">
           ${item.title ? `<div class=\"ag-title\">${item.title}</div>` : ''}
           <div class="ag-prompt">${(item.prompt || '').replace(/</g,'&lt;').slice(0,140)}</div>
-          <div class="ag-model">
-            <span class="ag-current">${item.model === 'nanobanana' ? '🍌' : (item.model === 'seedream4' ? '💙' : '—')}</span>
-            <span class="ag-actions">
-              <button class="ag-set" data-model="nanobanana">🍌 설정</button>
-              <button class="ag-set" data-model="seedream4">💙 설정</button>
-            </span>
-          </div>
+          
         </div>`;
       el.querySelector('[data-action="delete"]').addEventListener('click', async (ev)=>{
         ev.stopPropagation();
@@ -298,8 +293,19 @@
           ev.stopPropagation();
           const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
           const model = btn.getAttribute('data-model');
-          const resp = await fetch('/api/update-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1, model }) });
-          if(resp.ok){ loadGrid(); } else { const t = await resp.text(); alert('모델 설정 실패: '+t); }
+          btn.disabled = true;
+          btn.textContent = '저장중…';
+          try{
+            const resp = await fetch('/api/update-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1, model }) });
+            if(resp.ok){
+              // 즉시 UI 반영
+              const cur = el.querySelector('.ag-current'); if(cur){ cur.textContent = model === 'nanobanana' ? '🍌' : '💙'; }
+            }else{
+              const t = await resp.text(); alert('모델 설정 실패: '+t);
+            }
+          } finally {
+            btn.disabled = false; btn.textContent = btn.getAttribute('data-model') === 'nanobanana' ? '🍌' : '💙';
+          }
         });
       });
       return el;
