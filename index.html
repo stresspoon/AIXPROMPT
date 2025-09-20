@@ -51,7 +51,7 @@
       width:100%; min-height:140px; background:#111; color:#fff;
       border:1px solid var(--stroke); border-radius:12px; padding:12px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size:13px; line-height:1.6; resize:vertical;
+      font-size:13px; line-height:1.6; resize:vertical; overflow:auto;
     }
     textarea[readonly]{caret-color:transparent}
 
@@ -59,10 +59,11 @@
     .copy-overlay{
       position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
       background:rgba(19,19,19,.5); color:#fff; font-weight:800; font-size:14px; border-radius:12px;
-      opacity:0; transition:opacity .15s ease; cursor:pointer; user-select:none;
+      opacity:0; transition:opacity .15s ease; user-select:none; pointer-events:none;
     }
     .promptbox:hover .copy-overlay{opacity:1}
     @media (hover:none){ .copy-overlay{opacity:1} }
+    .copy-cta{ pointer-events:auto; background:var(--accent); color:#fff; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:var(--shadow) }
 
     /* Admin additions */
     .row{ display:grid; grid-template-columns:120px 1fr; gap:12px; align-items:center; margin-bottom:12px }
@@ -195,10 +196,11 @@ Example prompt 2,"></textarea>
           ${item.title ? `<div class="title">${item.title}</div>` : ''}
           <div class="promptbox">
             <textarea spellcheck="false" readonly>${item.prompt || ''}</textarea>
-            <div class="copy-overlay" role="button" aria-label="프롬프트 복사하기">복사하기</div>
+            <div class="copy-overlay"><button class="copy-cta" type="button">복사하기</button></div>
           </div>
         </div>`;
       const overlay = el.querySelector('.copy-overlay');
+      const copyBtn = el.querySelector('.copy-cta');
       const ta = el.querySelector('textarea');
       // admin delete overlay
       if(isAdmin){
@@ -222,7 +224,7 @@ Example prompt 2,"></textarea>
           alert('복사에 실패했어요. 브라우저 권한을 확인해주세요.');
         });
       }
-      overlay.addEventListener('click', copy);
+      copyBtn.addEventListener('click', copy);
       // 모바일 접근성: 텍스트 영역 탭 시도 시에도 복사
       ta.addEventListener('click', (e)=>{
         // 사용자는 편의상 탭만으로도 복사되도록 처리
