@@ -73,6 +73,12 @@
     .del-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(19,19,19,.5); color:#fff; font-weight:800; opacity:0; transition:opacity .15s ease; cursor:pointer; user-select:none }
     .media:hover .del-overlay{ opacity:1 }
 
+    /* View original overlay */
+    .view-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(19,19,19,.5); color:#fff; font-weight:800; opacity:0; transition:opacity .15s ease; user-select:none; z-index:1 }
+    .media:hover .view-overlay{ opacity:1 }
+    @media (hover:none){ .view-overlay{ opacity:1 } }
+    .view-cta{ pointer-events:auto; background:var(--accent); color:#fff; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:var(--shadow) }
+
     /* Lightbox */
     .lightbox{ position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; z-index:9999 }
     .lightbox.open{ display:flex }
@@ -204,6 +210,7 @@ Example prompt 2,"></textarea>
         <div class="media">
           <img src="${item.image}" alt="${item.title || 'image'}" />
           <span class="badge">#${index+1}</span>
+          <div class="view-overlay"><button type="button" class="view-cta">원본 보기</button></div>
         </div>
         <div class="body">
           ${item.title ? `<div class="title">${item.title}</div>` : ''}
@@ -216,15 +223,16 @@ Example prompt 2,"></textarea>
       const copyBtn = el.querySelector('.copy-cta');
       const ta = el.querySelector('textarea');
       const imgEl = el.querySelector('.media img');
-      if(imgEl){
-        imgEl.style.cursor = 'zoom-in';
-        imgEl.addEventListener('click', ()=>{
-          if(!lb || !lbImg) return;
-          lbImg.src = imgEl.src;
-          lb.classList.add('open');
-          lb.setAttribute('aria-hidden','false');
-        });
+      const viewBtn = el.querySelector('.view-cta');
+      function openLightbox(){
+        if(!lb || !lbImg) return;
+        lbImg.src = imgEl.src;
+        lb.classList.add('open');
+        lb.setAttribute('aria-hidden','false');
       }
+      if(imgEl){ imgEl.style.cursor = 'zoom-in'; }
+      if(imgEl){ imgEl.addEventListener('click', openLightbox); }
+      if(viewBtn){ viewBtn.addEventListener('click', openLightbox); }
       // admin delete overlay
       if(isAdmin){
         const media = el.querySelector('.media');
