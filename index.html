@@ -102,7 +102,7 @@
           <span class="badge">#${index+1}</span>
         </div>
         <div class="body">
-          <div class="title">${item.title || ''}</div>
+          ${item.title ? `<div class="title">${item.title}</div>` : ''}
           <div class="promptbox">
             <textarea spellcheck="false" readonly>${item.prompt || ''}</textarea>
             <div class="copy-overlay" role="button" aria-label="프롬프트 복사하기">복사하기</div>
