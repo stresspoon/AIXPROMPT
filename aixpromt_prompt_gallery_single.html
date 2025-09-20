@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AIXPROMT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #131313;           /* 배경 */
+      --fg: #ffffff;           /* 기본 폰트 */
+      --muted: #bcbcbc;        /* 보조 텍스트 */
+      --accent: #ff3d00;       /* 포인트 컬러 (사용자 지정) */
+      --card: #1b1b1b;         /* 카드 배경 */
+      --stroke: #2a2a2a;       /* 경계선 */
+      --radius: 16px;
+      --shadow: 0 6px 24px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      line-height:1.5;
+    }
+    .wrap{max-width:1200px; margin:0 auto; padding:28px 20px 80px}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:28px
+    }
+    .brand{
+      font-weight:800; letter-spacing:1px; font-size:20px;
+      display:inline-flex; align-items:center; gap:10px
+    }
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent); display:inline-block}
+    .subtitle{color:var(--muted); font-size:13px}
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap}
+    button, .btn{
+      background:var(--accent); color:var(--fg); border:none; padding:10px 14px; border-radius:12px;
+      font-weight:600; cursor:pointer; box-shadow:var(--shadow); transition:.2s ease;
+    }
+    button.secondary{background:#2a2a2a; color:#fff; box-shadow:none; border:1px solid var(--stroke)}
+    button:hover{transform:translateY(-1px); filter:saturate(1.1)}
+
+    .grid{
+      display:grid; grid-template-columns:repeat(12,1fr); gap:18px;
+    }
+    .card{
+      grid-column: span 12;
+      background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius);
+      overflow:hidden; box-shadow:var(--shadow);
+      display:grid; grid-template-columns:1fr; 
+    }
+    .media{position:relative; aspect-ratio: 4 / 5; background:#0f0f0f}
+    .media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+    .badge{position:absolute; left:14px; top:14px; padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.55); color:#fff; font-size:12px; backdrop-filter: blur(4px); border:1px solid rgba(255,255,255,.12)}
+
+    .body{padding:16px; display:flex; flex-direction:column; gap:12px}
+    .title{font-size:16px; font-weight:700}
+    .promptbox{position:relative}
+    textarea{
+      width:100%; min-height:140px; background:#111; color:#fff;
+      border:1px solid var(--stroke); border-radius:12px; padding:12px 44px 12px 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size:13px; line-height:1.6; resize:vertical;
+    }
+    .copy{position:absolute; right:8px; bottom:8px; padding:8px 10px; border-radius:10px; background:var(--accent); border:none; color:#fff; font-weight:700; cursor:pointer}
+
+    @media (min-width:760px){ .card{grid-column: span 6; grid-template-columns: 1fr} }
+    @media (min-width:1080px){ .card{grid-column: span 4} }
+
+    footer{margin-top:36px; color:var(--muted); font-size:12px; text-align:center}
+    .credit a{color:var(--muted); text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="brand"><span class="dot"></span> AIXPROMT</div>
+        <div class="subtitle">복사해서 바로 쓰는 촬영/에디토리얼 프롬프트 갤러리</div>
+      </div>
+      <div class="toolbar">
+        <button id="copy-all">전체 복사</button>
+        <button class="secondary" id="add-card">+ 카드 추가</button>
+      </div>
+    </header>
+
+    <section class="grid" id="grid">
+      <!-- Card 1 -->
+      <article class="card">
+        <div class="media">
+          <img src="https://images.unsplash.com/photo-1520011617901-49b6796ae5a0?q=80&w=1200&auto=format&fit=crop" alt="editorial sample" />
+          <span class="badge">#1</span>
+        </div>
+        <div class="body">
+          <div class="title">Rooftop Editorial</div>
+          <div class="promptbox">
+            <textarea spellcheck="false">Use the uploaded face image as the strict identity reference, preserving exact facial features, proportions, and natural skin texture. Editorial full-body portrait on a rooftop at golden hour, clean minimalist styling, subtle wind in clothing. Shot on Sony A7R V + 55mm f/1.8, soft directional light, shallow depth of field, natural color grading.</textarea>
+            <button class="copy" data-target="prev">Copy</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card">
+        <div class="media">
+          <img src="https://images.unsplash.com/photo-1596704017254-9c7f9d7bc3e1?q=80&w=1200&auto=format&fit=crop" alt="mirror set" />
+          <span class="badge">#2</span>
+        </div>
+        <div class="body">
+          <div class="title">Mirror Studio</div>
+          <div class="promptbox">
+            <textarea spellcheck="false">Use the uploaded face image as the strict identity reference. Sleek studio with a tall oval mirror; subject in tailored suit touches the mirror, elegant posture. Shot on Canon R5 + RF 85mm f/1.2, top-lit softbox + negative fill, neutral background, cinematic contrast, clean color.</textarea>
+            <button class="copy" data-target="prev">Copy</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card">
+        <div class="media">
+          <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop" alt="seaside board" />
+          <span class="badge">#3</span>
+        </div>
+        <div class="body">
+          <div class="title">Sunset Beach Minimal</div>
+          <div class="promptbox">
+            <textarea spellcheck="false">Use the uploaded face image as the strict identity reference. Minimal fashion portrait at the beach during pastel sunset; subject in black turtleneck and light trousers, barefoot on a white platform with a leather tote nearby. Shot on Leica SL2 + APO-Summicron 75mm, wafer-thin DOF, soft backlight, muted pastel grading.</textarea>
+            <button class="copy" data-target="prev">Copy</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <div class="credit">© AIXPROMT • Point color <span style="color:var(--accent)">#ff3d00</span> • BG <code>#131313</code></div>
+    </footer>
+  </div>
+
+  <script>
+    // 개별 카드 복사
+    document.querySelectorAll('.copy').forEach(btn=>{
+      btn.addEventListener('click', async (e)=>{
+        const ta = btn.dataset.target === 'prev' ? btn.previousElementSibling : document.querySelector(btn.dataset.target);
+        try {
+          await navigator.clipboard.writeText(ta.value);
+          btn.textContent = 'Copied!';
+          setTimeout(()=>btn.textContent='Copy', 1200);
+        } catch(err){
+          alert('복사에 실패했어요. 브라우저 권한을 확인해주세요.');
+        }
+      });
+    });
+
+    // 전체 복사
+    document.getElementById('copy-all').addEventListener('click', async ()=>{
+      const all = Array.from(document.querySelectorAll('textarea')).map((t,i)=>`#${i+1}\n${t.value.trim()}`).join('\n\n');
+      try{
+        await navigator.clipboard.writeText(all);
+        const b=document.getElementById('copy-all'); b.textContent='전체 복사 완료!'; setTimeout(()=>b.textContent='전체 복사',1200);
+      }catch(err){ alert('복사에 실패했어요. 브라우저 권한을 확인해주세요.'); }
+    });
+
+    // 카드 동적 추가 (이미지 URL + 제목 + 프롬프트 입력)
+    document.getElementById('add-card').addEventListener('click', ()=>{
+      const url = prompt('이미지 URL을 붙여넣으세요 (비워두면 기본 이미지 사용)') || 'https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=1200&auto=format&fit=crop';
+      const title = prompt('카드 제목을 입력하세요') || 'New Prompt';
+      const promptText = prompt('프롬프트 기본값을 입력하세요') || 'Use the uploaded face image as the strict identity reference. Describe your setup here…';
+      const grid = document.getElementById('grid');
+      const index = grid.children.length + 1;
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="media">
+          <img src="${url}" alt="user image ${index}" />
+          <span class="badge">#${index}</span>
+        </div>
+        <div class="body">
+          <div class="title">${title}</div>
+          <div class="promptbox">
+            <textarea spellcheck="false">${promptText}</textarea>
+            <button class="copy" data-target="prev">Copy</button>
+          </div>
+        </div>`;
+      grid.appendChild(el);
+      el.querySelector('.copy').addEventListener('click', async (e)=>{
+        const ta = e.currentTarget.previousElementSibling;
+        try{ await navigator.clipboard.writeText(ta.value); e.currentTarget.textContent='Copied!'; setTimeout(()=>e.currentTarget.textContent='Copy',1200);}catch{ alert('복사 실패'); }
+      });
+    });
+  </script>
+</body>
+</html>

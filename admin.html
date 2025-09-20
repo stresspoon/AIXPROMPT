@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AIXPROMPT Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg:#131313; --fg:#fff; --muted:#bcbcbc; --accent:#ff3d00; --card:#1b1b1b; --stroke:#2a2a2a; --radius:16px; --shadow:0 6px 24px rgba(0,0,0,.35); }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{ margin:0; background:var(--bg); color:var(--fg); font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; line-height:1.5 }
+    .wrap{ max-width:840px; margin:0 auto; padding:28px 20px 80px }
+    header{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px }
+    .brand{ font-weight:800; letter-spacing:1px; font-size:20px; display:inline-flex; align-items:center; gap:10px }
+    .brand .dot{ width:10px; height:10px; border-radius:50%; background:var(--accent); display:inline-block }
+    .subtitle{ color:var(--muted); font-size:13px }
+    .card{ background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow) }
+    .row{ display:grid; grid-template-columns:120px 1fr; gap:12px; align-items:center; margin-bottom:12px }
+    label{ color:#ddd; font-size:13px }
+    input[type="text"], textarea{ width:100%; background:#111; color:#fff; border:1px solid var(--stroke); border-radius:12px; padding:10px; font-size:14px }
+    textarea{ min-height:160px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; line-height:1.6 }
+    input[type="file"]{ color:#ddd }
+    .actions{ display:flex; gap:10px; margin-top:12px }
+    button{ background:var(--accent); color:#fff; border:none; padding:10px 14px; border-radius:12px; font-weight:700; cursor:pointer; box-shadow:var(--shadow) }
+    .secondary{ background:#2a2a2a; border:1px solid var(--stroke) }
+    .note{ color:var(--muted); font-size:12px; margin-top:6px }
+    .preview{ width:100%; border:1px dashed var(--stroke); border-radius:12px; overflow:hidden; display:grid; place-items:center; aspect-ratio:4/5; background:#0f0f0f }
+    .preview img{ width:100%; height:100%; object-fit:cover }
+    .danger{ color:#ff6b6b }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="brand"><span class="dot"></span> AIXPROMPT Admin</div>
+        <div class="subtitle">관리자만 접근 • 로컬 이미지 업로드 → GitHub 커밋</div>
+      </div>
+      <a href="./index.html" class="secondary" style="text-decoration:none; padding:10px 14px; border-radius:12px; border:1px solid var(--stroke); background:#2a2a2a; color:#fff">사용자 페이지</a>
+    </header>
+
+    <div class="card">
+      <div class="row">
+        <label>이미지 파일</label>
+        <input id="file" type="file" accept="image/*" />
+      </div>
+      <div class="row">
+        <label>제목</label>
+        <input id="title" type="text" placeholder="예) Rooftop Editorial" />
+      </div>
+      <div class="row">
+        <label>프롬프트</label>
+        <textarea id="prompt" placeholder="프롬프트를 붙여넣으세요"></textarea>
+      </div>
+      <div class="row">
+        <label>이미지 미리보기</label>
+        <div class="preview" id="preview"><span class="note">이미지 선택 시 미리보기</span></div>
+      </div>
+      <div class="row">
+        <label>GitHub Repo</label>
+        <input id="repo" type="text" placeholder="stresspoon/AIXPROMPT" value="stresspoon/AIXPROMPT" />
+      </div>
+      <div class="row">
+        <label>브랜치</label>
+        <input id="branch" type="text" value="main" />
+      </div>
+      <div class="row">
+        <label>토큰</label>
+        <input id="token" type="password" placeholder="GitHub Personal Access Token" />
+      </div>
+      <div class="note">토큰은 이 브라우저에서만 사용되며 서버로 전송되지 않습니다. 저장하지 않습니다.</div>
+      <div class="actions">
+        <button id="save">저장(커밋)</button>
+        <button id="appendOnly" class="secondary">이미지 없이 JSON만 추가</button>
+        <button id="dangerClear" class="secondary danger" title="주의: 전체 JSON 초기화">데이터 초기화</button>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:16px">무백엔드 구조: 이미지는 `public/images/yyyymmdd-hhmmss-파일명`으로 저장, `data/prompts.json`에 항목 추가 → Vercel 정적 배포</p>
+  </div>
+
+  <script>
+    const $ = (s)=>document.querySelector(s);
+    const file = $('#file');
+    const title = $('#title');
+    const promptEl = $('#prompt');
+    const preview = $('#preview');
+    const repo = $('#repo');
+    const branch = $('#branch');
+    const token = $('#token');
+
+    file.addEventListener('change', ()=>{
+      preview.innerHTML = '';
+      const f = file.files && file.files[0];
+      if(!f){ preview.innerHTML = '<span class="note">이미지 선택 시 미리보기</span>'; return; }
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(f);
+      preview.appendChild(img);
+    });
+
+    async function gh(path){
+      const base = 'https://api.github.com';
+      const url = `${base}/repos/${repo.value}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(branch.value)}`;
+      const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token.value}`, 'Accept':'application/vnd.github+json' } });
+      if(!res.ok) return null; return await res.json();
+    }
+    async function ghPut(path, contentBase64, message, sha){
+      const url = `https://api.github.com/repos/${repo.value}/contents/${encodeURIComponent(path)}`;
+      const body = { message, content: contentBase64, branch: branch.value };
+      if(sha) body.sha = sha;
+      const res = await fetch(url, { method:'PUT', headers:{ 'Authorization': `Bearer ${token.value}`, 'Accept':'application/vnd.github+json' }, body: JSON.stringify(body) });
+      if(!res.ok){ const t = await res.text(); throw new Error('GitHub 업데이트 실패: '+t); }
+      return await res.json();
+    }
+    function toBase64(arrayBuffer){
+      let binary = '';
+      const bytes = new Uint8Array(arrayBuffer);
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) binary += String.fromCharCode(bytes[i]);
+      return btoa(binary);
+    }
+    async function readJson(){
+      const res = await fetch('./data/prompts.json?nocache='+Date.now());
+      if(!res.ok) return [];
+      return await res.json();
+    }
+    async function readRepoJson(){
+      const path = 'data/prompts.json';
+      const meta = await gh(path);
+      if(!meta){ return { items: [], sha: null }; }
+      const content = atob(meta.content.replace(/\n/g,''));
+      let items = [];
+      try{ items = JSON.parse(content); }catch{ items = []; }
+      return { items, sha: meta.sha };
+    }
+
+    async function uploadImageIfAny(){
+      const f = file.files && file.files[0];
+      if(!f) return null;
+      const buf = await f.arrayBuffer();
+      const base64 = toBase64(buf);
+      const now = new Date();
+      const ts = now.toISOString().replace(/[-:T.Z]/g,'').slice(0,14);
+      const safe = f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      const path = `public/images/${ts}-${safe}`;
+      await ghPut(path, base64, `feat: add image ${safe}`);
+      return `./public/images/${ts}-${safe}`;
+    }
+
+    async function saveItem(appendImage){
+      if(!repo.value || !branch.value || !token.value){ alert('Repo, 브랜치, 토큰을 모두 입력하세요.'); return; }
+      if(!promptEl.value.trim()){ alert('프롬프트를 입력하세요.'); return; }
+      const imagePath = appendImage ? await uploadImageIfAny() : null;
+      const { items, sha } = await readRepoJson();
+      const newItem = { image: imagePath || (items[0]?.image || ''), title: title.value.trim() || 'Untitled', prompt: promptEl.value.trim() };
+      const next = [...items, newItem];
+      const base64 = btoa(unescape(encodeURIComponent(JSON.stringify(next, null, 2))));
+      await ghPut('data/prompts.json', base64, 'feat: append prompt card', sha);
+      alert('저장 완료! 몇 초 내 Vercel에 반영됩니다.');
+      title.value = ''; promptEl.value = ''; file.value = ''; preview.innerHTML = '<span class="note">이미지 선택 시 미리보기</span>';
+    }
+
+    document.getElementById('save').addEventListener('click', ()=> saveItem(true));
+    document.getElementById('appendOnly').addEventListener('click', ()=> saveItem(false));
+
+    document.getElementById('dangerClear').addEventListener('click', async()=>{
+      if(!confirm('정말 모든 데이터를 초기화하시겠어요? 이 작업은 되돌릴 수 없습니다.')) return;
+      if(!repo.value || !branch.value || !token.value){ alert('Repo, 브랜치, 토큰을 모두 입력하세요.'); return; }
+      const base64 = btoa(unescape(encodeURIComponent('[]\n')));
+      const meta = await gh('data/prompts.json');
+      const sha = meta && meta.sha;
+      await ghPut('data/prompts.json', base64, 'chore: reset prompts.json', sha);
+      alert('초기화 완료');
+    });
+  </script>
+</body>
+</html>
+
+

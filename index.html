@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AIXPROMPT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #131313;
+      --fg: #ffffff;
+      --muted: #bcbcbc;
+      --accent: #ff3d00;
+      --card: #1b1b1b;
+      --stroke: #2a2a2a;
+      --radius: 16px;
+      --shadow: 0 6px 24px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      line-height:1.5;
+    }
+    .wrap{max-width:1200px; margin:0 auto; padding:28px 20px 80px}
+    header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:28px}
+    .brand{font-weight:800; letter-spacing:1px; font-size:20px; display:inline-flex; align-items:center; gap:10px}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent); display:inline-block}
+    .subtitle{color:var(--muted); font-size:13px}
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap}
+    button, .btn{
+      background:var(--accent); color:var(--fg); border:none; padding:10px 14px; border-radius:12px;
+      font-weight:600; cursor:pointer; box-shadow:var(--shadow); transition:.2s ease;
+    }
+    button.secondary{background:#2a2a2a; color:#fff; box-shadow:none; border:1px solid var(--stroke)}
+    button:hover{transform:translateY(-1px); filter:saturate(1.1)}
+
+    .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:18px}
+    .card{grid-column: span 12; background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:grid; grid-template-columns:1fr}
+    .media{position:relative; aspect-ratio: 4 / 5; background:#0f0f0f}
+    .media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+    .badge{position:absolute; left:14px; top:14px; padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.55); color:#fff; font-size:12px; backdrop-filter: blur(4px); border:1px solid rgba(255,255,255,.12)}
+
+    .body{padding:16px; display:flex; flex-direction:column; gap:12px}
+    .title{font-size:16px; font-weight:700}
+    .promptbox{position:relative}
+    textarea{
+      width:100%; min-height:140px; background:#111; color:#fff;
+      border:1px solid var(--stroke); border-radius:12px; padding:12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size:13px; line-height:1.6; resize:vertical;
+    }
+    textarea[readonly]{caret-color:transparent}
+
+    /* Hover overlay copy */
+    .copy-overlay{
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      background:rgba(19,19,19,.5); color:#fff; font-weight:800; font-size:14px; border-radius:12px;
+      opacity:0; transition:opacity .15s ease; cursor:pointer; user-select:none;
+    }
+    .promptbox:hover .copy-overlay{opacity:1}
+    @media (hover:none){ .copy-overlay{opacity:1} }
+
+    @media (min-width:760px){ .card{grid-column: span 6; grid-template-columns: 1fr} }
+    @media (min-width:1080px){ .card{grid-column: span 4} }
+
+    footer{margin-top:36px; color:var(--muted); font-size:12px; text-align:center}
+    .credit a{color:var(--muted); text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="brand"><span class="dot"></span> AIXPROMPT</div>
+        <div class="subtitle">복사해서 바로 쓰는 촬영/에디토리얼 프롬프트 갤러리</div>
+      </div>
+      <div class="toolbar">
+        <button id="copy-all">전체 복사</button>
+      </div>
+    </header>
+
+    <section class="grid" id="grid"></section>
+
+    <footer>
+      <div class="credit">© AIXPROMPT • Point color <span style="color:var(--accent)">#ff3d00</span> • BG <code>#131313</code></div>
+    </footer>
+  </div>
+
+  <script>
+    const GRID = document.getElementById('grid');
+
+    function createCard(item, index){
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="media">
+          <img src="${item.image}" alt="${item.title || 'image'}" />
+          <span class="badge">#${index+1}</span>
+        </div>
+        <div class="body">
+          <div class="title">${item.title || ''}</div>
+          <div class="promptbox">
+            <textarea spellcheck="false" readonly>${item.prompt || ''}</textarea>
+            <div class="copy-overlay" role="button" aria-label="프롬프트 복사하기">복사하기</div>
+          </div>
+        </div>`;
+      const overlay = el.querySelector('.copy-overlay');
+      const ta = el.querySelector('textarea');
+      function copy(){
+        const text = ta.value;
+        navigator.clipboard.writeText(text).then(()=>{
+          overlay.textContent = '복사됨!';
+          setTimeout(()=> overlay.textContent = '복사하기', 1000);
+        }).catch(()=>{
+          alert('복사에 실패했어요. 브라우저 권한을 확인해주세요.');
+        });
+      }
+      overlay.addEventListener('click', copy);
+      // 모바일 접근성: 텍스트 영역 탭 시도 시에도 복사
+      ta.addEventListener('click', (e)=>{
+        // 사용자는 편의상 탭만으로도 복사되도록 처리
+        if (matchMedia('(hover: none)').matches) copy();
+      });
+      return el;
+    }
+
+    async function load(){
+      try{
+        const url = `./data/prompts.json?t=${Date.now()}`; // 캐시 회피
+        const res = await fetch(url, {cache:'no-store'});
+        if(!res.ok) throw new Error('데이터 로드 실패');
+        const items = await res.json();
+        GRID.innerHTML = '';
+        items.forEach((it, i)=> GRID.appendChild(createCard(it, i)));
+      }catch(err){
+        GRID.innerHTML = '<div style="grid-column: span 12; padding:20px; background:#1b1b1b; border:1px solid #2a2a2a; border-radius:12px">데이터를 불러오지 못했습니다.</div>'
+      }
+    }
+
+    document.getElementById('copy-all').addEventListener('click', async ()=>{
+      const all = Array.from(document.querySelectorAll('textarea')).map((t,i)=>`#${i+1}\n${t.value.trim()}`).join('\n\n');
+      try{
+        await navigator.clipboard.writeText(all);
+        const b=document.getElementById('copy-all'); b.textContent='전체 복사 완료!'; setTimeout(()=>b.textContent='전체 복사',1200);
+      }catch(err){ alert('복사에 실패했어요. 브라우저 권한을 확인해주세요.'); }
+    });
+
+    load();
+  </script>
+</body>
+</html>
+
+
