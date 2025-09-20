@@ -11,7 +11,8 @@
   },
   {
     "image": "./public/images/20250920104154-generated-image__2_.png",
-    "prompt": "A closer portrait of a casually dressed man sitting outdoors in the rainforest, smiling slightly while reading a book. Background softly blurred with golden sunlight streaming through trees, cinematic tones. Captured on a Canon EOS R5 with an 85mm f/1.2 lens."
+    "prompt": "A closer portrait of a casually dressed man sitting outdoors in the rainforest, smiling slightly while reading a book. Background softly blurred with golden sunlight streaming through trees, cinematic tones. Captured on a Canon EOS R5 with an 85mm f/1.2 lens.",
+    "model": "seedream4"
   },
   {
     "image": "./public/images/20250920104229-generated-image__10_.png",
