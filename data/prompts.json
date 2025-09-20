@@ -38,5 +38,10 @@
     "image": "./public/images/20250920113622-image.jpg",
     "prompt": "A stylish studio portrait of a man in a black suit and sunglasses, leaning casually against a wall while holding a coffee cup. Background lit with dramatic purple and amber lighting, creating a fashion editorial vibe. Captured on a Canon EOS R5 with a 35mm f/1.4 lens.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250920113637-image.jpg",
+    "prompt": "A black-and-white close-up portrait of a smiling man in a striped shirt, leaning forward slightly. Soft studio lighting emphasizes facial texture and natural expression. Captured on a Leica M10 Monochrom with a 50mm f/2 lens.",
+    "model": "seedream4"
   }
 ]
