@@ -139,7 +139,7 @@
             <label>모델</label>
             <div style="display:flex; gap:8px">
               <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="ix_model" value="nanobanana" checked /> 🍌 Nanobanana</label>
-              <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="ix_model" value="seedream4" /> 💙⭐ Seedream 4.0</label>
+              <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="ix_model" value="seedream4" /> 💙 Seedream 4.0</label>
             </div>
           </div>
           <div class="row">
@@ -218,7 +218,7 @@ Example prompt 2,,nanobanana"></textarea>
       el.innerHTML = `
         <div class="media">
           <img src="${item.image}" alt="${item.title || 'image'}" />
-          <span class="badge">${item.model === 'nanobanana' ? '🍌' : (item.model === 'seedream4' ? '💙⭐' : '')}</span>
+          <span class="badge">${item.model === 'nanobanana' ? '🍌' : (item.model === 'seedream4' ? '💙' : '')}</span>
           <div class="view-overlay"><button type="button" class="view-cta">원본 보기</button></div>
         </div>
         <div class="body">
@@ -369,10 +369,13 @@ Example prompt 2,,nanobanana"></textarea>
         try{ const out = await compressImageFile(selected); imageBase64=out.base64; imageName=out.name; imageMime=out.mime; }
         catch(err){ const buf=await selected.arrayBuffer(); let binary=''; const bytes=new Uint8Array(buf); for(let i=0;i<bytes.length;i++) binary+=String.fromCharCode(bytes[i]); imageBase64=btoa(binary); imageName=selected.name; imageMime=selected.type||'application/octet-stream'; }
       }
-      const resp = await fetch('/api/append-card', {
-        method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token },
-        body: JSON.stringify({ prompt: promptEl.value.trim(), imageBase64, imageName, imageMime, model: getIxModel() })
-      });
+      async function postOnce(b64){
+        return fetch('/api/append-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ prompt: promptEl.value.trim(), imageBase64: b64, imageName, imageMime, model: getIxModel() }) });
+      }
+      let resp = await postOnce(imageBase64);
+      if(resp && resp.status === 413 && appendImage && selected){
+        try{ const smaller = await compressImageFile(selected, { maxEdge: 1280, quality: 0.75, type: 'image/jpeg' }); imageBase64=smaller.base64; imageName=smaller.name; imageMime=smaller.mime; resp = await postOnce(imageBase64); }catch(e){}
+      }
       if(!resp.ok){ const t = await resp.text(); alert('저장 실패: '+t); return; }
       alert('저장 완료! 잠시 후 반영됩니다.');
       if(promptEl) promptEl.value=''; if(file) file.value=''; setPreview();

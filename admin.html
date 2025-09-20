@@ -228,11 +228,19 @@
           const buf = await selected.arrayBuffer(); let binary=''; const bytes=new Uint8Array(buf); for(let i=0;i<bytes.length;i++) binary+=String.fromCharCode(bytes[i]); imageBase64=btoa(binary); imageName=selected.name; imageMime=selected.type||'application/octet-stream';
         }
       }
-      const resp = await fetch('/api/append-card', {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token },
-        body: JSON.stringify({ prompt: promptEl.value.trim(), imageBase64, imageName, imageMime, model: getModel() })
-      });
+      async function postOnce(b64, maxEdgeUsed){
+        const r = await fetch('/api/append-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ prompt: promptEl.value.trim(), imageBase64: b64, imageName, imageMime, model: getModel() }) });
+        return r;
+      }
+      let resp = await postOnce(imageBase64, 1920);
+      if(resp && resp.status === 413 && appendImage && selected){
+        // Re-compress smaller and retry once
+        try{
+          const smaller = await compressImageFile(selected, { maxEdge: 1280, quality: 0.75, type: 'image/jpeg' });
+          imageBase64 = smaller.base64; imageName = smaller.name; imageMime = smaller.mime;
+          resp = await postOnce(imageBase64, 1280);
+        }catch(e){ /* ignore */ }
+      }
       if(!resp.ok){ const t = await resp.text(); alert('저장 실패: '+t); return; }
       alert('저장 완료! 잠시 후 반영됩니다.');
       promptEl.value=''; file.value=''; setPreview();
