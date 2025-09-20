@@ -1,10 +1,5 @@
 [
   {
-    "image": "https://images.unsplash.com/photo-1520011617901-49b6796ae5a0?q=80&w=1200&auto=format&fit=crop",
-    "title": "Rooftop Editorial",
-    "prompt": "Use the uploaded face image as the strict identity reference, preserving exact facial features, proportions, and natural skin texture. Editorial full-body portrait on a rooftop at golden hour, clean minimalist styling, subtle wind in clothing. Shot on Sony A7R V + 55mm f/1.8, soft directional light, shallow depth of field, natural color grading."
-  },
-  {
     "image": "https://images.unsplash.com/photo-1596704017254-9c7f9d7bc3e1?q=80&w=1200&auto=format&fit=crop",
     "title": "Mirror Studio",
     "prompt": "Use the uploaded face image as the strict identity reference. Sleek studio with a tall oval mirror; subject in tailored suit touches the mirror, elegant posture. Shot on Canon R5 + RF 85mm f/1.2, top-lit softbox + negative fill, neutral background, cinematic contrast, clean color."
