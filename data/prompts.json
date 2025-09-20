@@ -22,5 +22,10 @@
   {
     "image": "./public/images/20250920104317-generated-image__12_.png",
     "prompt": "A relaxed outdoor portrait of a casually dressed man in short sleeves, sitting on a wooden chair in the rainforest, reading a book. Surrounded by lush green plants, warm sunlight highlights the scene. Captured on a Nikon Z7 II with a 35mm f/1.8 lens, cinematic tones."
+  },
+  {
+    "image": "./public/images/20250920110856-b1.jpg",
+    "prompt": "A cozy studio portrait of a man in a knitted sweater, seated on a chair under a warm standing lamp. Soft ambient lighting creates a relaxed and intimate mood. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens, cinematic tones.",
+    "model": "seedream4"
   }
 ]
