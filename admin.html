@@ -140,10 +140,11 @@
       const token = getAuth();
       if(!token){ alert('로그인이 필요합니다.'); return; }
       let imageBase64 = null, imageName='', imageMime='application/octet-stream';
-      if(appendImage && f()){
-        imageName = f().name || 'image';
-        imageMime = f().type || 'application/octet-stream';
-        const buf = await f().arrayBuffer();
+      const selected = getSelectedFile();
+      if(appendImage && selected){
+        imageName = selected.name || 'image';
+        imageMime = selected.type || 'application/octet-stream';
+        const buf = await selected.arrayBuffer();
         let binary=''; const bytes = new Uint8Array(buf); for(let i=0;i<bytes.length;i++) binary += String.fromCharCode(bytes[i]);
         imageBase64 = btoa(binary);
       }
