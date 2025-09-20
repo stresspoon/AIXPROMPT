@@ -13,7 +13,9 @@
     "image": "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop",
     "title": "Sunset Beach Minimal",
     "prompt": "Use the uploaded face image as the strict identity reference. Minimal fashion portrait at the beach during pastel sunset; subject in black turtleneck and light trousers, barefoot on a white platform with a leather tote nearby. Shot on Leica SL2 + APO-Summicron 75mm, wafer-thin DOF, soft backlight, muted pastel grading."
+  },
+  {
+    "image": "./public/images/20250920094122-Gemini_Generated_Image_ef3mvwef3mvwef3m.png",
+    "prompt": "A wide shot of a modern conference room with large windows, showing a casually dressed man actively engaging in discussion at the table. Several colleagues sit around, some blurred, creating a sense of group interaction. Natural office lighting, cinematic tones. Captured on a Sony Alpha 7 IV with a 24-70mm f/2.8 lens at 35mm."
   }
 ]
-
-
