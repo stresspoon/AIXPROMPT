@@ -75,10 +75,11 @@
     .media:hover .del-overlay{ opacity:1 }
 
     /* View original overlay */
-    .view-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(19,19,19,.5); color:#fff; font-weight:800; opacity:0; transition:opacity .15s ease; user-select:none; z-index:1 }
+    .view-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:10px; background:rgba(19,19,19,.5); color:#fff; font-weight:800; opacity:0; transition:opacity .15s ease; user-select:none; z-index:1 }
     .media:hover .view-overlay{ opacity:1 }
     @media (hover:none){ .view-overlay{ opacity:1 } }
     .view-cta{ pointer-events:auto; background:var(--accent); color:#fff; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:var(--shadow) }
+    .del-cta{ pointer-events:auto; background:#ff4d4d; color:#fff; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:var(--shadow) }
 
     /* Lightbox */
     .lightbox{ position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; z-index:9999 }
@@ -237,10 +238,13 @@ Example prompt 2,"></textarea>
       // admin delete overlay
       if(isAdmin){
         const media = el.querySelector('.media');
-        const del = document.createElement('div');
-        del.className = 'del-overlay'; del.textContent = '삭제';
-        media.appendChild(del);
-        del.addEventListener('click', async ()=>{
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button'; delBtn.className = 'del-cta'; delBtn.textContent = '삭제';
+        const viewOverlay = el.querySelector('.view-overlay');
+        if(viewOverlay){ viewOverlay.appendChild(delBtn); }
+        else { const container = document.createElement('div'); container.className='view-overlay'; container.appendChild(delBtn); media.appendChild(container); }
+        delBtn.addEventListener('click', async (ev)=>{
+          ev.stopPropagation(); ev.preventDefault();
           if(!confirm(`#${index+1} 카드를 삭제할까요?`)) return;
           const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
           const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1 }) });
