@@ -73,6 +73,12 @@
     .del-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(19,19,19,.5); color:#fff; font-weight:800; opacity:0; transition:opacity .15s ease; cursor:pointer; user-select:none }
     .media:hover .del-overlay{ opacity:1 }
 
+    /* Lightbox */
+    .lightbox{ position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; z-index:9999 }
+    .lightbox.open{ display:flex }
+    .lightbox img{ max-width:90vw; max-height:90vh; object-fit:contain; box-shadow:var(--shadow); border:1px solid var(--stroke); border-radius:12px }
+    .lb-close{ position:absolute; top:16px; right:16px; background:#2a2a2a; color:#fff; border:1px solid var(--stroke); border-radius:10px; padding:8px 10px; cursor:pointer }
+
     @media (min-width:760px){ .card{grid-column: span 6; grid-template-columns: 1fr} }
     @media (min-width:1080px){ .card{grid-column: span 4} }
 
@@ -161,6 +167,10 @@ Example prompt 2,"></textarea>
     </section>
 
     <section class="grid" id="grid"></section>
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+      <button class="lb-close" id="lbClose" aria-label="닫기">닫기</button>
+      <img id="lbImg" alt="preview" />
+    </div>
 
     <footer>
       <div class="credit">에익스라이프 AIXLIFE · 고객지원: <a href="mailto:naminsoo@aixlife.co.kr">naminsoo@aixlife.co.kr</a></div>
@@ -183,6 +193,9 @@ Example prompt 2,"></textarea>
     const bulkLines = document.getElementById('bulkLines');
     const bulkFiles = document.getElementById('bulkFiles');
     let isAdmin = false;
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
 
     function createCard(item, index){
       const el = document.createElement('article');
@@ -202,6 +215,16 @@ Example prompt 2,"></textarea>
       const overlay = el.querySelector('.copy-overlay');
       const copyBtn = el.querySelector('.copy-cta');
       const ta = el.querySelector('textarea');
+      const imgEl = el.querySelector('.media img');
+      if(imgEl){
+        imgEl.style.cursor = 'zoom-in';
+        imgEl.addEventListener('click', ()=>{
+          if(!lb || !lbImg) return;
+          lbImg.src = imgEl.src;
+          lb.classList.add('open');
+          lb.setAttribute('aria-hidden','false');
+        });
+      }
       // admin delete overlay
       if(isAdmin){
         const media = el.querySelector('.media');
@@ -245,6 +268,10 @@ Example prompt 2,"></textarea>
         GRID.innerHTML = '<div style="grid-column: span 12; padding:20px; background:#1b1b1b; border:1px solid #2a2a2a; border-radius:12px">데이터를 불러오지 못했습니다.</div>'
       }
     }
+
+    // Lightbox controls
+    if(lbClose){ lbClose.addEventListener('click', ()=>{ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); lbImg.src=''; }); }
+    if(lb){ lb.addEventListener('click', (e)=>{ if(e.target === lb) lbClose.click(); }); }
 
     // Admin helpers
     function getSelectedFile(){ return file && file.files && file.files[0]; }
