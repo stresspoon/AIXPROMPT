@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "framework": null,
   "routes": [
     { "src": "/", "dest": "/index.html" },
     { "src": "/admin", "dest": "/admin.html" },
