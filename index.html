@@ -136,6 +136,13 @@
             <textarea id="prompt" placeholder="프롬프트를 붙여넣으세요"></textarea>
           </div>
           <div class="row">
+            <label>모델</label>
+            <div style="display:flex; gap:8px">
+              <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="ix_model" value="nanobanana" checked /> 🍌 Nanobanana</label>
+              <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="ix_model" value="seedream4" /> 💙⭐ Seedream 4.0</label>
+            </div>
+          </div>
+          <div class="row">
             <label>이미지 미리보기</label>
             <div class="preview" id="preview"><span class="note">이미지 선택 시 미리보기</span></div>
           </div>
@@ -154,9 +161,9 @@
           <div class="title">대량등록</div>
           <div class="row">
             <label>CSV 붙여넣기</label>
-            <textarea id="bulkCsv" placeholder="prompt,imageUrl (헤더 없이 행마다)
+            <textarea id="bulkCsv" placeholder="prompt,imageUrl,model (헤더 없이 행마다)
 Example prompt 1,https://example.com/a.jpg
-Example prompt 2,"></textarea>
+Example prompt 2,,nanobanana"></textarea>
           </div>
           <div class="row">
             <label>로컬 이미지</label>
@@ -211,7 +218,7 @@ Example prompt 2,"></textarea>
       el.innerHTML = `
         <div class="media">
           <img src="${item.image}" alt="${item.title || 'image'}" />
-          <span class="badge">#${index+1}</span>
+          <span class="badge">${item.model === 'nanobanana' ? '🍌' : (item.model === 'seedream4' ? '💙⭐' : '')}</span>
           <div class="view-overlay"><button type="button" class="view-cta">원본 보기</button></div>
         </div>
         <div class="body">
@@ -310,6 +317,7 @@ Example prompt 2,"></textarea>
     function getAuth(){ return localStorage.getItem('AIX_AUTH') || ''; }
     function setAuth(b64){ localStorage.setItem('AIX_AUTH', b64); }
     function clearAuth(){ localStorage.removeItem('AIX_AUTH'); }
+    function getIxModel(){ const el=document.querySelector('input[name="ix_model"]:checked'); return el?el.value:''; }
     async function checkAuth(){
       const token = getAuth();
       if(!token) return false;
@@ -363,7 +371,7 @@ Example prompt 2,"></textarea>
       }
       const resp = await fetch('/api/append-card', {
         method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token },
-        body: JSON.stringify({ prompt: promptEl.value.trim(), imageBase64, imageName, imageMime })
+        body: JSON.stringify({ prompt: promptEl.value.trim(), imageBase64, imageName, imageMime, model: getIxModel() })
       });
       if(!resp.ok){ const t = await resp.text(); alert('저장 실패: '+t); return; }
       alert('저장 완료! 잠시 후 반영됩니다.');
@@ -386,7 +394,8 @@ Example prompt 2,"></textarea>
         const parts = line.split(',');
         const prompt = (parts[0] || '').trim();
         const imageUrl = (parts[1] || '').trim();
-        if(prompt) out.push({ prompt, imageUrl: imageUrl || undefined });
+        const model = (parts[2] || '').trim();
+        if(prompt) out.push({ prompt, imageUrl: imageUrl || undefined, model: model || undefined });
       }
       return out;
     }

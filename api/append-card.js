@@ -28,6 +28,7 @@ module.exports = async function handler(req, res){
     try{ body = JSON.parse(raw); }catch(e){ body = {}; }
 
     const prompt = (body && typeof body.prompt === 'string') ? body.prompt.trim() : '';
+    const model = (body && typeof body.model === 'string') ? body.model.trim() : '';
     if(!prompt){ res.statusCode = 400; return res.end('Missing prompt'); }
 
     const imageBase64Input = body.imageBase64 || null; // may be dataURL or pure base64
@@ -101,6 +102,7 @@ module.exports = async function handler(req, res){
       }catch(e){ items = []; }
     }
     const newItem = { image: imagePath || (items[0]?.image || ''), prompt };
+    if(model) newItem.model = model; // optional model field
     const next = [...items, newItem];
     const jsonText = JSON.stringify(next, null, 2) + '\n';
     const jsonBase64 = Buffer.from(jsonText, 'utf8').toString('base64');

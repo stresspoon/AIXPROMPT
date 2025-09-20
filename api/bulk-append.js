@@ -16,7 +16,7 @@ module.exports = async function handler(req, res){
     const chunks = []; await new Promise((resolve)=>{ req.on('data',(c)=>chunks.push(c)); req.on('end', resolve); });
     let body = {}; try{ body = JSON.parse(Buffer.concat(chunks).toString('utf8')); }catch{ body = {}; }
     /**
-     * body.items: Array<{ prompt: string, imageUrl?: string, imageIndex?: number }>
+     * body.items: Array<{ prompt: string, imageUrl?: string, imageIndex?: number, model?: string }>
      * body.imageBase64List: Array<{ base64: string|dataURL, name?: string, mime?: string }>
      */
     const itemsInput = Array.isArray(body.items) ? body.items : [];
@@ -96,6 +96,7 @@ module.exports = async function handler(req, res){
     // Process inputs sequentially (keep it simple and safe)
     for(const it of itemsInput){
       const prompt = (it && typeof it.prompt === 'string') ? it.prompt.trim() : '';
+      const model = (it && typeof it.model === 'string') ? it.model.trim() : '';
       if(!prompt) continue;
       let imagePath = '';
       if(it.imageUrl){
@@ -105,7 +106,9 @@ module.exports = async function handler(req, res){
       } else if (uploadedLocalImages.length === 1){
         imagePath = uploadedLocalImages[0];
       }
-      items.push({ image: imagePath || (items[0]?.image || ''), prompt });
+      const obj = { image: imagePath || (items[0]?.image || ''), prompt };
+      if(model) obj.model = model;
+      items.push(obj);
     }
 
     const jsonText = JSON.stringify(items, null, 2) + '\n';
