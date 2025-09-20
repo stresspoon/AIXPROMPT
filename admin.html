@@ -31,6 +31,10 @@
     .preview img{ width:100%; height:100%; object-fit:cover }
     .danger{ color:#ff6b6b }
     .preview.drop{ border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,61,0,.25) inset }
+    .ag-model{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted) }
+    .ag-model .ag-current{ font-size:14px }
+    .ag-model .ag-actions{ display:flex; gap:6px }
+    .ag-model .ag-set{ background:#2a2a2a; color:#fff; border:1px solid var(--stroke); border-radius:8px; padding:6px 8px; cursor:pointer }
     /* 관리자 갤러리 */
     .ag-grid{ display:grid; grid-template-columns:repeat(12,1fr); gap:18px; margin-top:16px }
     .ag-card{ grid-column: span 12; background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:grid; grid-template-columns:1fr }
@@ -268,6 +272,13 @@
         <div class="ag-body">
           ${item.title ? `<div class=\"ag-title\">${item.title}</div>` : ''}
           <div class="ag-prompt">${(item.prompt || '').replace(/</g,'&lt;').slice(0,140)}</div>
+          <div class="ag-model">
+            <span class="ag-current">${item.model === 'nanobanana' ? '🍌' : (item.model === 'seedream4' ? '💙' : '—')}</span>
+            <span class="ag-actions">
+              <button class="ag-set" data-model="nanobanana">🍌 설정</button>
+              <button class="ag-set" data-model="seedream4">💙 설정</button>
+            </span>
+          </div>
         </div>`;
       const del = el.querySelector('.ag-del');
       del.addEventListener('click', async ()=>{
@@ -275,6 +286,14 @@
         if(!confirm(`#${index+1} 카드를 삭제할까요?`)) return;
         const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1 }) });
         if(resp.ok){ loadGrid(); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
+      });
+      el.querySelectorAll('.ag-set').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
+          const model = btn.getAttribute('data-model');
+          const resp = await fetch('/api/update-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1, model }) });
+          if(resp.ok){ loadGrid(); } else { const t = await resp.text(); alert('모델 설정 실패: '+t); }
+        });
       });
       return el;
     }
