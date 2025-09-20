@@ -64,6 +64,14 @@
     .promptbox:hover .copy-overlay{opacity:1}
     @media (hover:none){ .copy-overlay{opacity:1} }
 
+    /* Admin additions */
+    .row{ display:grid; grid-template-columns:120px 1fr; gap:12px; align-items:center; margin-bottom:12px }
+    .preview{ width:100%; border:1px dashed var(--stroke); border-radius:12px; overflow:hidden; display:grid; place-items:center; aspect-ratio:4/5; background:#0f0f0f }
+    .preview img{ width:100%; height:100%; object-fit:cover }
+    .danger{ color:#ff6b6b }
+    .del-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(19,19,19,.5); color:#fff; font-weight:800; opacity:0; transition:opacity .15s ease; cursor:pointer; user-select:none }
+    .media:hover .del-overlay{ opacity:1 }
+
     @media (min-width:760px){ .card{grid-column: span 6; grid-template-columns: 1fr} }
     @media (min-width:1080px){ .card{grid-column: span 4} }
 
@@ -80,8 +88,52 @@
       </div>
       <div class="toolbar">
         <button id="copy-all">전체 복사</button>
+        <button id="admin-toggle" class="secondary">관리</button>
       </div>
     </header>
+
+    <section id="adminWrap" style="display:none">
+      <div id="loginCard" class="card" style="margin-bottom:16px;">
+        <div class="body">
+          <div class="row">
+            <label>아이디</label>
+            <input id="uid" type="text" placeholder="admin" />
+          </div>
+          <div class="row">
+            <label>비밀번호</label>
+            <input id="pwd" type="password" placeholder="••••••" />
+          </div>
+          <div class="actions" style="display:flex; gap:10px; margin-top:12px">
+            <button id="loginBtn">로그인</button>
+          </div>
+          <div class="note">저장된 로그인은 로컬 스토리지에만 보관됩니다.</div>
+        </div>
+      </div>
+
+      <div id="formCard" class="card" style="display:none">
+        <div class="body">
+          <div class="row">
+            <label>이미지 파일</label>
+            <input id="file" type="file" accept="image/*" />
+          </div>
+          <div class="row">
+            <label>프롬프트</label>
+            <textarea id="prompt" placeholder="프롬프트를 붙여넣으세요"></textarea>
+          </div>
+          <div class="row">
+            <label>이미지 미리보기</label>
+            <div class="preview" id="preview"><span class="note">이미지 선택 시 미리보기</span></div>
+          </div>
+          <div class="actions" style="display:flex; gap:10px; margin-top:12px">
+            <button id="save">저장(커밋)</button>
+            <button id="appendOnly" class="secondary">이미지 없이 JSON만 추가</button>
+            <button id="dangerClear" class="secondary danger" title="주의: 전체 JSON 초기화">데이터 초기화</button>
+            <button id="logout" class="secondary">로그아웃</button>
+            <button id="refresh" class="secondary">갤러리 새로고침</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="grid" id="grid"></section>
 
@@ -92,6 +144,16 @@
 
   <script>
     const GRID = document.getElementById('grid');
+    const adminWrap = document.getElementById('adminWrap');
+    const loginCard = document.getElementById('loginCard');
+    const formCard = document.getElementById('formCard');
+    const adminToggle = document.getElementById('admin-toggle');
+    const file = document.getElementById('file');
+    const promptEl = document.getElementById('prompt');
+    const preview = document.getElementById('preview');
+    const uid = document.getElementById('uid');
+    const pwd = document.getElementById('pwd');
+    let isAdmin = false;
 
     function createCard(item, index){
       const el = document.createElement('article');
@@ -110,6 +172,19 @@
         </div>`;
       const overlay = el.querySelector('.copy-overlay');
       const ta = el.querySelector('textarea');
+      // admin delete overlay
+      if(isAdmin){
+        const media = el.querySelector('.media');
+        const del = document.createElement('div');
+        del.className = 'del-overlay'; del.textContent = '삭제';
+        media.appendChild(del);
+        del.addEventListener('click', async ()=>{
+          if(!confirm(`#${index+1} 카드를 삭제할까요?`)) return;
+          const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
+          const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1 }) });
+          if(resp.ok){ await load(); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
+        });
+      }
       function copy(){
         const text = ta.value;
         navigator.clipboard.writeText(text).then(()=>{
@@ -140,6 +215,78 @@
         GRID.innerHTML = '<div style="grid-column: span 12; padding:20px; background:#1b1b1b; border:1px solid #2a2a2a; border-radius:12px">데이터를 불러오지 못했습니다.</div>'
       }
     }
+
+    // Admin helpers
+    function getSelectedFile(){ return file && file.files && file.files[0]; }
+    function setPreview(){
+      if(!preview) return;
+      preview.innerHTML = '';
+      const imgf = getSelectedFile();
+      if(!imgf){ preview.innerHTML = '<span class="note">이미지 선택 시 미리보기</span>'; return; }
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(imgf);
+      preview.appendChild(img);
+    }
+    if(file){ file.addEventListener('change', setPreview); }
+
+    function getAuth(){ return localStorage.getItem('AIX_AUTH') || ''; }
+    function setAuth(b64){ localStorage.setItem('AIX_AUTH', b64); }
+    function clearAuth(){ localStorage.removeItem('AIX_AUTH'); }
+    async function checkAuth(){
+      const token = getAuth();
+      if(!token) return false;
+      const r = await fetch('/api/auth-check', { headers: { 'Authorization': 'Basic '+token }});
+      return r.ok;
+    }
+    async function ensureAdminUI(forceShow=false){
+      isAdmin = await checkAuth();
+      adminWrap.style.display = forceShow || isAdmin ? '' : 'none';
+      loginCard.style.display = isAdmin ? 'none' : '';
+      formCard.style.display = isAdmin ? '' : 'none';
+      if(!isAdmin){ if(uid) uid.value=''; if(pwd) pwd.value=''; }
+      await load();
+    }
+
+    document.getElementById('loginBtn')?.addEventListener('click', async ()=>{
+      const u = (uid && uid.value.trim()) || ''; const p = (pwd && pwd.value.trim()) || '';
+      if(!u || !p){ alert('아이디/비밀번호를 입력하세요'); return; }
+      const b64 = btoa(u+':'+p);
+      const r = await fetch('/api/auth-check', { headers:{ 'Authorization': 'Basic '+b64 }});
+      if(r.ok){ setAuth(b64); await ensureAdminUI(true); } else { alert('로그인 실패'); }
+    });
+    document.getElementById('logout')?.addEventListener('click', async ()=>{ clearAuth(); await ensureAdminUI(true); });
+    document.getElementById('refresh')?.addEventListener('click', load);
+    adminToggle.addEventListener('click', async ()=>{ await ensureAdminUI(true); });
+
+    async function saveItem(appendImage){
+      if(!promptEl || !promptEl.value.trim()){ alert('프롬프트를 입력하세요.'); return; }
+      const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
+      let imageBase64 = null, imageName='', imageMime='application/octet-stream';
+      const selected = getSelectedFile();
+      if(appendImage && selected){
+        imageName = selected.name || 'image';
+        imageMime = selected.type || 'application/octet-stream';
+        const buf = await selected.arrayBuffer();
+        let binary=''; const bytes = new Uint8Array(buf); for(let i=0;i<bytes.length;i++) binary += String.fromCharCode(bytes[i]);
+        imageBase64 = btoa(binary);
+      }
+      const resp = await fetch('/api/append-card', {
+        method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token },
+        body: JSON.stringify({ prompt: promptEl.value.trim(), imageBase64, imageName, imageMime })
+      });
+      if(!resp.ok){ const t = await resp.text(); alert('저장 실패: '+t); return; }
+      alert('저장 완료! 잠시 후 반영됩니다.');
+      if(promptEl) promptEl.value=''; if(file) file.value=''; setPreview();
+      await load();
+    }
+    document.getElementById('save')?.addEventListener('click', ()=> saveItem(true));
+    document.getElementById('appendOnly')?.addEventListener('click', ()=> saveItem(false));
+    document.getElementById('dangerClear')?.addEventListener('click', async ()=>{
+      if(!confirm('정말 모든 데이터를 초기화하시겠어요? 이 작업은 되돌릴 수 없습니다.')) return;
+      const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
+      const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ reset: true }) });
+      if(resp.ok){ alert('전체 삭제 완료'); await load(); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
+    });
 
     document.getElementById('copy-all').addEventListener('click', async ()=>{
       const all = Array.from(document.querySelectorAll('textarea')).map((t,i)=>`#${i+1}\n${t.value.trim()}`).join('\n\n');
