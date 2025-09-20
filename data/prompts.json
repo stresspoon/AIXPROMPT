@@ -21,7 +21,8 @@
   },
   {
     "image": "./public/images/20250920104253-generated-image__11_.png",
-    "prompt": "A candid medium shot of a casually dressed man sitting at a desk, leaning forward slightly and smiling warmly while engaging with a client opposite him. The client is blurred in the foreground, emphasizing consultation focus. Captured on a Canon EOS R6 with a 50mm f/1.2 lens, natural daylight through windows."
+    "prompt": "A candid medium shot of a casually dressed man sitting at a desk, leaning forward slightly and smiling warmly while engaging with a client opposite him. The client is blurred in the foreground, emphasizing consultation focus. Captured on a Canon EOS R6 with a 50mm f/1.2 lens, natural daylight through windows.",
+    "model": "seedream4"
   },
   {
     "image": "./public/images/20250920104317-generated-image__12_.png",
