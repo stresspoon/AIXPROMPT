@@ -30,6 +30,19 @@
     .preview{ width:100%; border:1px dashed var(--stroke); border-radius:12px; overflow:hidden; display:grid; place-items:center; aspect-ratio:4/5; background:#0f0f0f }
     .preview img{ width:100%; height:100%; object-fit:cover }
     .danger{ color:#ff6b6b }
+    /* 관리자 갤러리 */
+    .ag-grid{ display:grid; grid-template-columns:repeat(12,1fr); gap:18px; margin-top:16px }
+    .ag-card{ grid-column: span 12; background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); display:grid; grid-template-columns:1fr }
+    .ag-media{ position:relative; aspect-ratio: 4 / 5; background:#0f0f0f }
+    .ag-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover }
+    .ag-badge{ position:absolute; left:14px; top:14px; padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.55); color:#fff; font-size:12px; backdrop-filter: blur(4px); border:1px solid rgba(255,255,255,.12) }
+    .ag-body{ padding:12px; display:flex; flex-direction:column; gap:8px }
+    .ag-title{ font-size:14px; font-weight:700 }
+    .ag-prompt{ color:var(--muted); font-size:12px; line-height:1.6; max-height:3.2em; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical }
+    .ag-del{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(19,19,19,.5); color:#fff; font-weight:800; opacity:0; transition:opacity .15s ease; cursor:pointer; user-select:none }
+    .ag-media:hover .ag-del{ opacity:1 }
+    @media (min-width:760px){ .ag-card{ grid-column: span 6 } }
+    @media (min-width:1080px){ .ag-card{ grid-column: span 4 } }
   </style>
 </head>
 <body>
@@ -80,6 +93,11 @@
     </div>
 
     <p class="note" style="margin-top:16px">무백엔드 구조: 이미지는 `public/images/yyyymmdd-hhmmss-파일명`으로 저장, `data/prompts.json`에 항목 추가 → Vercel 정적 배포</p>
+
+    <div class="actions" style="margin-top:12px">
+      <button id="loadGrid" class="secondary">갤러리 불러오기/새로고침</button>
+    </div>
+    <section id="adminGrid" class="ag-grid"></section>
   </div>
 
   <script>
@@ -168,19 +186,39 @@
       if(resp.ok){ alert('전체 삭제 완료'); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
     });
 
-    document.getElementById('loadList').addEventListener('click', async()=>{
-      const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
-      const r = await fetch('/api/list-cards', { headers:{ 'Authorization':'Basic '+token } });
-      if(!r.ok){ alert('목록 불러오기 실패'); return; }
-      const { items } = await r.json();
-      const list = items.map(it=> `#${it.index} ${it.image ? '🖼' : ''} ${it.prompt}`).join('\n');
-      const idx = prompt(`삭제할 번호를 입력하세요.\n\n${list}\n\n번호 입력:`);
-      if(!idx) return;
-      const n = Number(idx);
-      if(!Number.isFinite(n) || n < 1){ alert('번호가 올바르지 않습니다.'); return; }
-      const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: n }) });
-      if(resp.ok){ alert(`#${n} 삭제 완료`); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
-    });
+    const ADMIN_GRID = document.getElementById('adminGrid');
+    function createAdminCard(item, index){
+      const el = document.createElement('article');
+      el.className = 'ag-card';
+      el.innerHTML = `
+        <div class="ag-media">
+          <img src="${item.image}" alt="card ${index+1}" />
+          <span class="ag-badge">#${index+1}</span>
+          <div class="ag-del" role="button" aria-label="카드 삭제">삭제</div>
+        </div>
+        <div class="ag-body">
+          ${item.title ? `<div class=\"ag-title\">${item.title}</div>` : ''}
+          <div class="ag-prompt">${(item.prompt || '').replace(/</g,'&lt;').slice(0,140)}</div>
+        </div>`;
+      const del = el.querySelector('.ag-del');
+      del.addEventListener('click', async ()=>{
+        const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
+        if(!confirm(`#${index+1} 카드를 삭제할까요?`)) return;
+        const resp = await fetch('/api/delete-card', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ index: index+1 }) });
+        if(resp.ok){ loadGrid(); } else { const t = await resp.text(); alert('삭제 실패: '+t); }
+      });
+      return el;
+    }
+    async function loadGrid(){
+      try{
+        const res = await fetch('./data/prompts.json?nocache='+Date.now());
+        if(!res.ok) throw new Error('load failed');
+        const items = await res.json();
+        ADMIN_GRID.innerHTML = '';
+        items.forEach((it,i)=> ADMIN_GRID.appendChild(createAdminCard(it,i)));
+      }catch(err){ ADMIN_GRID.innerHTML = '<div class="note">목록을 불러오지 못했습니다.</div>'; }
+    }
+    document.getElementById('loadGrid').addEventListener('click', ()=>{ loadGrid(); ADMIN_GRID.scrollIntoView({behavior:'smooth'}); });
 
     ensureAuthUI();
   </script>
