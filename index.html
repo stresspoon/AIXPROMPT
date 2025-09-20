@@ -31,6 +31,7 @@
     .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent); display:inline-block}
     .subtitle{color:var(--muted); font-size:13px}
     .toolbar{display:flex; gap:10px; flex-wrap:wrap}
+    .legend{color:var(--muted); font-size:12px; display:flex; align-items:center; gap:8px}
     button, .btn{
       background:var(--accent); color:var(--fg); border:none; padding:10px 14px; border-radius:12px;
       font-weight:600; cursor:pointer; box-shadow:var(--shadow); transition:.2s ease;
@@ -102,7 +103,7 @@
         <div class="subtitle">복사해서 바로 쓰는 촬영/에디토리얼 프롬프트 갤러리</div>
       </div>
       <div class="toolbar">
-        <button id="copy-all">전체 복사</button>
+        <div class="legend">🍌 Nanobanana · 💙 Seedream 4.0</div>
         <button id="admin-toggle" class="secondary">관리</button>
       </div>
     </header>
@@ -431,13 +432,7 @@ Example prompt 2,,nanobanana"></textarea>
       await load();
     });
 
-    document.getElementById('copy-all').addEventListener('click', async ()=>{
-      const all = Array.from(document.querySelectorAll('textarea')).map((t,i)=>`#${i+1}\n${t.value.trim()}`).join('\n\n');
-      try{
-        await navigator.clipboard.writeText(all);
-        const b=document.getElementById('copy-all'); b.textContent='전체 복사 완료!'; setTimeout(()=>b.textContent='전체 복사',1200);
-      }catch(err){ alert('복사에 실패했어요. 브라우저 권한을 확인해주세요.'); }
-    });
+    // 전체 복사 기능 제거
 
     load();
   </script>
