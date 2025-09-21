@@ -5,6 +5,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920104229-generated-image__10_.png",
+    "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
+    "model": "nanobanana"
+  },
+  {
     "image": "./public/images/20250920104317-generated-image__12_.png",
     "prompt": "A relaxed outdoor portrait of a casually dressed man in short sleeves, sitting on a wooden chair in the rainforest, reading a book. Surrounded by lush green plants, warm sunlight highlights the scene. Captured on a Nikon Z7 II with a 35mm f/1.8 lens, cinematic tones.",
     "model": "seedream4"
@@ -13,11 +18,6 @@
     "image": "./public/images/20250920101914-generated-image__1_.png",
     "prompt": "A candid portrait of a man sitting on a wooden chair in the rainforest, dressed casually, reading a book with focus. Surrounded by lush greenery, soft diffused sunlight filters through the canopy. Editorial style with natural cinematic tones. Captured on a Canon EOS R5 with a 50mm f/1.2 lens.",
     "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250920104229-generated-image__10_.png",
-    "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
-    "model": "nanobanana"
   },
   {
     "image": "./public/images/20250921092305-image.jpg",
