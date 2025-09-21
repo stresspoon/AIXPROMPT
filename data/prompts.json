@@ -10,6 +10,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920104317-generated-image__12_.png",
+    "prompt": "A relaxed outdoor portrait of a casually dressed man in short sleeves, sitting on a wooden chair in the rainforest, reading a book. Surrounded by lush green plants, warm sunlight highlights the scene. Captured on a Nikon Z7 II with a 35mm f/1.8 lens, cinematic tones.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250920104154-generated-image__2_.png",
     "prompt": "A closer portrait of a casually dressed man sitting outdoors in the rainforest, smiling slightly while reading a book. Background softly blurred with golden sunlight streaming through trees, cinematic tones. Captured on a Canon EOS R5 with an 85mm f/1.2 lens.",
     "model": "seedream4"
@@ -47,11 +52,6 @@
   {
     "image": "./public/images/20250920113637-image.jpg",
     "prompt": "A black-and-white close-up portrait of a smiling man in a striped shirt, leaning forward slightly. Soft studio lighting emphasizes facial texture and natural expression. Captured on a Leica M10 Monochrom with a 50mm f/2 lens.",
-    "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250920104317-generated-image__12_.png",
-    "prompt": "A relaxed outdoor portrait of a casually dressed man in short sleeves, sitting on a wooden chair in the rainforest, reading a book. Surrounded by lush green plants, warm sunlight highlights the scene. Captured on a Nikon Z7 II with a 35mm f/1.8 lens, cinematic tones.",
     "model": "seedream4"
   },
   {
