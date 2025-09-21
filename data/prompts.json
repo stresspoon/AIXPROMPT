@@ -53,5 +53,10 @@
     "image": "./public/images/20250921091148-image.jpg",
     "prompt": "A clean studio portrait of a young man in a simple blue knit top, standing against a plain gray background. Soft even lighting highlights smooth skin and natural expression. Captured on a Sony Alpha 7R V with an 85mm f/1.4 lens, professional headshot style.",
     "model": "nanobanana"
+  },
+  {
+    "image": "./public/images/20250921091204-image.jpg",
+    "prompt": "A stylish studio shot of a man in a black hoodie and sunglasses, sitting cross-legged on the floor while holding a coffee cup. Background glows with a gradient of orange and pink lighting, creating a modern and edgy vibe. Captured on a Canon EOS R5 with a 35mm f/1.4 lens.",
+    "model": "nanobanana"
   }
 ]
