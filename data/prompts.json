@@ -40,11 +40,6 @@
     "model": "seedream4"
   },
   {
-    "image": "./public/images/20250920101914-generated-image__1_.png",
-    "prompt": "A candid portrait of a man sitting on a wooden chair in the rainforest, dressed casually, reading a book with focus. Surrounded by lush greenery, soft diffused sunlight filters through the canopy. Editorial style with natural cinematic tones. Captured on a Canon EOS R5 with a 50mm f/1.2 lens.",
-    "model": "seedream4"
-  },
-  {
     "image": "./public/images/20250921092305-image.jpg",
     "prompt": "A dynamic shot of a man mid-air on a skateboard, wearing a colorful retro windbreaker and black sneakers. Captured in a skatepark under clear blue skies, with strong backlighting outlining his silhouette. Shot on a Sony Alpha 9 with a 16-35mm f/2.8 lens, sports photography style.",
     "model": "seedream4"
@@ -87,6 +82,11 @@
   {
     "image": "./public/images/20250921093059-image.jpg",
     "prompt": "A candid shot of a man crouching on the beach, wearing a pastel-colored knit sweater and ripped light-wash jeans, white sneakers slightly sandy. Overcast sky with muted soft tones, natural and dreamy vibe. Shot on a Contax T2 35mm film camera with Kodak Portra 400.",
+    "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250920101914-generated-image__1_.png",
+    "prompt": "A candid portrait of a man sitting on a wooden chair in the rainforest, dressed casually, reading a book with focus. Surrounded by lush greenery, soft diffused sunlight filters through the canopy. Editorial style with natural cinematic tones. Captured on a Canon EOS R5 with a 50mm f/1.2 lens.",
     "model": "seedream4"
   },
   {
