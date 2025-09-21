@@ -78,5 +78,10 @@
     "image": "./public/images/20250921092305-image.jpg",
     "prompt": "A dynamic shot of a man mid-air on a skateboard, wearing a colorful retro windbreaker and black sneakers. Captured in a skatepark under clear blue skies, with strong backlighting outlining his silhouette. Shot on a Sony Alpha 9 with a 16-35mm f/2.8 lens, sports photography style.",
     "model": "nanobanana"
+  },
+  {
+    "image": "./public/images/20250921092357-image.jpg",
+    "prompt": "A relaxed portrait of a man in a navy sweatshirt and beige trousers, leaning casually against a concrete wall, laughing openly. Soft natural daylight, minimal urban background. Shot on a Canon EOS R6 with a 50mm f/1.2 lens, lifestyle aesthetic.",
+    "model": "seedream4"
   }
 ]
