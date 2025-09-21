@@ -88,10 +88,5 @@
     "image": "./public/images/20250921093059-image.jpg",
     "prompt": "A candid shot of a man crouching on the beach, wearing a pastel-colored knit sweater and ripped light-wash jeans, white sneakers slightly sandy. Overcast sky with muted soft tones, natural and dreamy vibe. Shot on a Contax T2 35mm film camera with Kodak Portra 400.",
     "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250921093223-image.jpg",
-    "prompt": "A candid shot of a man crouching on the beach, wearing a pastel-colored knit sweater and ripped light-wash jeans, white sneakers slightly sandy. Overcast sky with muted soft tones, natural and dreamy vibe. Shot on a Contax T2 35mm film camera with Kodak Portra 400.",
-    "model": "nanobanana"
   }
 ]
