@@ -48,5 +48,10 @@
     "image": "./public/images/20250920113649-image.jpg",
     "prompt": "A warm-toned portrait of a man in a white shirt, standing against a softly lit beige background. Golden light highlights his face, cinematic tones. Captured on a Sony Alpha 7R V with an 85mm f/1.4 lens.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250921091148-image.jpg",
+    "prompt": "A clean studio portrait of a young man in a simple blue knit top, standing against a plain gray background. Soft even lighting highlights smooth skin and natural expression. Captured on a Sony Alpha 7R V with an 85mm f/1.4 lens, professional headshot style.",
+    "model": "nanobanana"
   }
 ]
