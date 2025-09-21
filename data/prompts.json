@@ -40,11 +40,6 @@
     "model": "seedream4"
   },
   {
-    "image": "./public/images/20250920104253-generated-image__11_.png",
-    "prompt": "A candid medium shot of a casually dressed man sitting at a desk, leaning forward slightly and smiling warmly while engaging with a client opposite him. The client is blurred in the foreground, emphasizing consultation focus. Captured on a Canon EOS R6 with a 50mm f/1.2 lens, natural daylight through windows.",
-    "model": "seedream4"
-  },
-  {
     "image": "./public/images/20250920101914-generated-image__1_.png",
     "prompt": "A candid portrait of a man sitting on a wooden chair in the rainforest, dressed casually, reading a book with focus. Surrounded by lush greenery, soft diffused sunlight filters through the canopy. Editorial style with natural cinematic tones. Captured on a Canon EOS R5 with a 50mm f/1.2 lens.",
     "model": "seedream4"
@@ -102,6 +97,11 @@
   {
     "image": "./public/images/20250921204043-image.jpg",
     "prompt": "A street portrait of a man in a black puffer jacket and cargo pants, holding a takeaway coffee cup while standing in front of a glass office building. Overcast daylight, muted cinematic color grading. Shot on a Sony A7R IV with a 35mm f/1.4 lens.",
+    "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250920104253-generated-image__11_.png",
+    "prompt": "A candid medium shot of a casually dressed man sitting at a desk, leaning forward slightly and smiling warmly while engaging with a client opposite him. The client is blurred in the foreground, emphasizing consultation focus. Captured on a Canon EOS R6 with a 50mm f/1.2 lens, natural daylight through windows.",
     "model": "seedream4"
   },
   {
