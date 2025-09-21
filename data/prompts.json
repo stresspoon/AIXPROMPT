@@ -50,6 +50,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250921091215-image.jpg",
+    "prompt": "A relaxed portrait of a casually dressed man wearing a black knit sweater and jeans, sitting on a chair in a sunlit studio. Warm natural light creates soft shadows and highlights, producing a cozy and approachable atmosphere. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250921092357-image.jpg",
     "prompt": "A relaxed portrait of a man in a navy sweatshirt and beige trousers, leaning casually against a concrete wall, laughing openly. Soft natural daylight, minimal urban background. Shot on a Canon EOS R6 with a 50mm f/1.2 lens, lifestyle aesthetic.",
     "model": "seedream4"
@@ -72,11 +77,6 @@
   {
     "image": "./public/images/20250921091204-image.jpg",
     "prompt": "A stylish studio shot of a man in a black hoodie and sunglasses, sitting cross-legged on the floor while holding a coffee cup. Background glows with a gradient of orange and pink lighting, creating a modern and edgy vibe. Captured on a Canon EOS R5 with a 35mm f/1.4 lens.",
-    "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250921091215-image.jpg",
-    "prompt": "A relaxed portrait of a casually dressed man wearing a black knit sweater and jeans, sitting on a chair in a sunlit studio. Warm natural light creates soft shadows and highlights, producing a cozy and approachable atmosphere. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens.",
     "model": "seedream4"
   },
   {
