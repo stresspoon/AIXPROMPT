@@ -88,5 +88,10 @@
     "image": "./public/images/20250921093059-image.jpg",
     "prompt": "A candid shot of a man crouching on the beach, wearing a pastel-colored knit sweater and ripped light-wash jeans, white sneakers slightly sandy. Overcast sky with muted soft tones, natural and dreamy vibe. Shot on a Contax T2 35mm film camera with Kodak Portra 400.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250921203852-image.jpg",
+    "prompt": "A bright portrait of a man in a red t-shirt and cap, sitting poolside with beige trousers and white sneakers. Clear blue sky, palm trees, and city skyline in the background. Shot on a Fujifilm GFX100 with a 45mm f/2.8 lens, crisp and vibrant summer tones.",
+    "model": "seedream4"
   }
 ]
