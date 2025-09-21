@@ -98,5 +98,10 @@
     "image": "./public/images/20250921204043-image.jpg",
     "prompt": "A street portrait of a man in a black puffer jacket and cargo pants, holding a takeaway coffee cup while standing in front of a glass office building. Overcast daylight, muted cinematic color grading. Shot on a Sony A7R IV with a 35mm f/1.4 lens.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250921204151-image.jpg",
+    "prompt": "A moody urban portrait of a man wearing a green bomber jacket and black beanie, hands in pockets, standing on a subway platform with a train passing by in motion blur. Shot on a Nikon Z9 with a 24mm f/1.8 lens, cinematic night lighting.",
+    "model": "seedream4"
   }
 ]
