@@ -63,5 +63,10 @@
     "image": "./public/images/20250921091215-image.jpg",
     "prompt": "A relaxed portrait of a casually dressed man wearing a black knit sweater and jeans, sitting on a chair in a sunlit studio. Warm natural light creates soft shadows and highlights, producing a cozy and approachable atmosphere. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens.",
     "model": "nanobanana"
+  },
+  {
+    "image": "./public/images/20250921091228-image.jpg",
+    "prompt": "A dramatic close-up portrait of a man looking upwards with a subtle smile, set against a deep burgundy background. Strong directional lighting emphasizes skin texture and facial contours, cinematic tones. Captured on a Leica SL2 with a 50mm f/1.4 lens.",
+    "model": "nanobanana"
   }
 ]
