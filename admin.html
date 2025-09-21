@@ -295,17 +295,17 @@
       el.addEventListener('drop', async (e)=>{
         e.preventDefault(); e.stopPropagation();
         const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
-        const children = Array.from(ADMIN_GRID.children);
+        const children = Array.from(ADMIN_GRID.querySelectorAll('.ag-card'));
         const src = dragSrcIndex; const dst = Array.prototype.indexOf.call(children, el);
         if(src === dst || src == null){ el.classList.remove('drag-over-before','drag-over-after'); return; }
         const before = el.classList.contains('drag-over-before');
         // Build new order
-        const current = children.map((c,i)=> i+1);
+        const current = Array.from(ADMIN_GRID.querySelectorAll('.ag-card')).map((_,i)=> i+1);
         const moved = current.splice(src,1)[0];
         current.splice(before?dst:dst+1,0,moved);
         // Optimistic UI: reorder DOM
-        const srcEl = children[src];
-        const dstEl = children[dst];
+        const srcEl = ADMIN_GRID.querySelectorAll('.ag-card')[src];
+        const dstEl = ADMIN_GRID.querySelectorAll('.ag-card')[dst];
         ADMIN_GRID.insertBefore(srcEl, before ? dstEl : dstEl.nextSibling);
         el.classList.remove('drag-over-before','drag-over-after');
         // Persist
@@ -356,6 +356,8 @@
       }catch(err){ ADMIN_GRID.innerHTML = '<div class="note">목록을 불러오지 못했습니다.</div>'; }
     }
     document.getElementById('loadGrid').addEventListener('click', ()=>{ loadGrid(); ADMIN_GRID.scrollIntoView({behavior:'smooth'}); });
+    // Prevent default dragover on grid to avoid text ghost
+    ADMIN_GRID.addEventListener('dragover', (e)=>{ e.preventDefault(); });
 
     ensureAuthUI();
   </script>
