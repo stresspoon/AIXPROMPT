@@ -20,6 +20,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920094306-Gemini_Generated_Image_ef3mvwef3mvwef3m.png",
+    "prompt": "A wide shot of a modern conference room with large windows, showing a casually dressed man actively engaging in discussion at the table. Several colleagues sit around, some blurred, creating a sense of group interaction. Natural office lighting, cinematic tones. Captured on a Sony Alpha 7 IV with a 24-70mm f/2.8 lens at 35mm.",
+    "model": "nanobanana"
+  },
+  {
     "image": "./public/images/20250920113637-image.jpg",
     "prompt": "A black-and-white close-up portrait of a smiling man in a striped shirt, leaning forward slightly. Soft studio lighting emphasizes facial texture and natural expression. Captured on a Leica M10 Monochrom with a 50mm f/2 lens.",
     "model": "seedream4"
@@ -53,11 +58,6 @@
     "image": "./public/images/20250920104253-generated-image__11_.png",
     "prompt": "A candid medium shot of a casually dressed man sitting at a desk, leaning forward slightly and smiling warmly while engaging with a client opposite him. The client is blurred in the foreground, emphasizing consultation focus. Captured on a Canon EOS R6 with a 50mm f/1.2 lens, natural daylight through windows.",
     "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250920094306-Gemini_Generated_Image_ef3mvwef3mvwef3m.png",
-    "prompt": "A wide shot of a modern conference room with large windows, showing a casually dressed man actively engaging in discussion at the table. Several colleagues sit around, some blurred, creating a sense of group interaction. Natural office lighting, cinematic tones. Captured on a Sony Alpha 7 IV with a 24-70mm f/2.8 lens at 35mm.",
-    "model": "nanobanana"
   },
   {
     "image": "./public/images/20250921091148-image.jpg",
