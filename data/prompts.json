@@ -93,5 +93,10 @@
     "image": "./public/images/20250921203852-image.jpg",
     "prompt": "A bright portrait of a man in a red t-shirt and cap, sitting poolside with beige trousers and white sneakers. Clear blue sky, palm trees, and city skyline in the background. Shot on a Fujifilm GFX100 with a 45mm f/2.8 lens, crisp and vibrant summer tones.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250921204043-image.jpg",
+    "prompt": "A street portrait of a man in a black puffer jacket and cargo pants, holding a takeaway coffee cup while standing in front of a glass office building. Overcast daylight, muted cinematic color grading. Shot on a Sony A7R IV with a 35mm f/1.4 lens.",
+    "model": "seedream4"
   }
 ]
