@@ -47,7 +47,7 @@
     .ag-body{ padding:12px; display:flex; flex-direction:column; gap:8px }
     .ag-title{ font-size:14px; font-weight:700 }
     .ag-prompt{ color:var(--muted); font-size:12px; line-height:1.6; max-height:3.2em; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical }
-    .ag-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(19,19,19,.5); color:#fff; opacity:0; transition:opacity .15s ease; user-select:none }
+    .ag-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(19,19,19,.5); color:#fff; opacity:0; transition:opacity .15s ease; user-select:none; pointer-events:none }
     .ag-media:hover .ag-overlay{ opacity:1 }
     .ag-tool{ pointer-events:auto; background:#2a2a2a; color:#fff; border:1px solid var(--stroke); border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer; box-shadow:var(--shadow) }
     .ag-tool.del{ background:#ff4d4d; border-color:#ff4d4d }
@@ -287,7 +287,7 @@
         </div>`;
 
       // drag handlers
-      el.addEventListener('dragstart', (e)=>{ dragSrcIndex = index; if(e.dataTransfer){ e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain', ''); } el.classList.add('dragging'); });
+      el.addEventListener('dragstart', (e)=>{ dragSrcIndex = index; if(e.dataTransfer){ e.dataTransfer.effectAllowed='move'; e.dataTransfer.setDragImage(new Image(),0,0); } el.classList.add('dragging'); });
       el.addEventListener('dragend', ()=>{ el.classList.remove('dragging','drag-over-before','drag-over-after'); });
       el.addEventListener('dragover', (e)=>{ e.preventDefault();
         const rect = el.getBoundingClientRect();
