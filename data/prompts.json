@@ -10,6 +10,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920104229-generated-image__10_.png",
+    "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
+    "model": "nanobanana"
+  },
+  {
     "image": "./public/images/20250921092305-image.jpg",
     "prompt": "A dynamic shot of a man mid-air on a skateboard, wearing a colorful retro windbreaker and black sneakers. Captured in a skatepark under clear blue skies, with strong backlighting outlining his silhouette. Shot on a Sony Alpha 9 with a 16-35mm f/2.8 lens, sports photography style.",
     "model": "seedream4"
@@ -53,11 +58,6 @@
     "image": "./public/images/20250920113637-image.jpg",
     "prompt": "A black-and-white close-up portrait of a smiling man in a striped shirt, leaning forward slightly. Soft studio lighting emphasizes facial texture and natural expression. Captured on a Leica M10 Monochrom with a 50mm f/2 lens.",
     "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250920104229-generated-image__10_.png",
-    "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
-    "model": "nanobanana"
   },
   {
     "image": "./public/images/20250921091148-image.jpg",
