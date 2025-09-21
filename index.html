@@ -140,7 +140,7 @@
             <label>모델</label>
             <div style="display:flex; gap:8px">
               <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="ix_model" value="nanobanana" checked /> 🍌 Nanobanana</label>
-              <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="ix_model" value="seedream4" /> 💙 Seedream 4.0</label>
+              <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="ix_model" value="seedream4" /> 🌊 Seedream 4.0</label>
             </div>
           </div>
           <div class="row">
@@ -194,7 +194,7 @@
       el.innerHTML = `
         <div class="media">
           <img src="${item.image}" alt="${item.title || 'image'}" />
-          <span class="badge">${item.model === 'nanobanana' ? '🍌' : (item.model === 'seedream4' ? '💙' : '')}</span>
+          <span class="badge">${item.model === 'nanobanana' ? '🍌' : (item.model === 'seedream4' ? '🌊' : '')}</span>
           <div class="view-overlay"><button type="button" class="view-cta">원본 보기</button></div>
         </div>
         <div class="body">

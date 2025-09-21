@@ -87,7 +87,7 @@
         <label>모델</label>
         <div style="display:flex; gap:8px">
           <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="model" value="nanobanana" checked /> 🍌 Nanobanana</label>
-          <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="model" value="seedream4" /> 💙⭐ Seedream 4.0</label>
+          <label style="display:flex; align-items:center; gap:6px"><input type="radio" name="model" value="seedream4" /> 🌊 Seedream 4.0</label>
         </div>
       </div>
       <div class="row">
@@ -263,19 +263,42 @@
     });
 
     const ADMIN_GRID = document.getElementById('adminGrid');
+    let dragSrcIndex = null;
     function createAdminCard(item, index){
       const el = document.createElement('article');
       el.className = 'ag-card';
+      el.setAttribute('draggable','true'); el.dataset.index = String(index+1);
       el.innerHTML = `
         <div class="ag-media">
           <img src="${item.image}" alt="card ${index+1}" />
           <span class="ag-badge">#${index+1}</span>
           <div class="ag-overlay">
             <button class="ag-tool" data-model="nanobanana">🍌</button>
-            <button class="ag-tool" data-model="seedream4">💙</button>
+            <button class="ag-tool" data-model="seedream4">🌊</button>
             <button class="ag-tool del" data-action="delete">삭제</button>
           </div>
         </div>
+      // drag handlers
+      el.addEventListener('dragstart', (e)=>{ dragSrcIndex = index; e.dataTransfer.effectAllowed='move'; el.style.opacity='.6'; });
+      el.addEventListener('dragend', ()=>{ el.style.opacity=''; });
+      el.addEventListener('dragover', (e)=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; });
+      el.addEventListener('drop', async (e)=>{
+        e.preventDefault();
+        const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
+        const children = Array.from(ADMIN_GRID.children);
+        const src = dragSrcIndex; const dst = Array.prototype.indexOf.call(children, el);
+        if(src === dst || src == null) return;
+        // Build new order
+        const current = children.map((c,i)=> i+1);
+        const moved = current.splice(src,1)[0];
+        current.splice(dst,0,moved);
+        // Optimistic UI: reorder DOM
+        if(src<dst) ADMIN_GRID.insertBefore(ADMIN_GRID.children[src], ADMIN_GRID.children[dst].nextSibling);
+        else ADMIN_GRID.insertBefore(ADMIN_GRID.children[src], ADMIN_GRID.children[dst]);
+        // Persist
+        const r = await fetch('/api/reorder-cards', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ order: current }) });
+        if(!r.ok){ alert('순서 저장 실패'); loadGrid(); }
+      });
         <div class="ag-body">
           ${item.title ? `<div class=\"ag-title\">${item.title}</div>` : ''}
           <div class="ag-prompt">${(item.prompt || '').replace(/</g,'&lt;').slice(0,140)}</div>
