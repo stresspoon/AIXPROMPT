@@ -20,6 +20,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920104154-generated-image__2_.png",
+    "prompt": "A closer portrait of a casually dressed man sitting outdoors in the rainforest, smiling slightly while reading a book. Background softly blurred with golden sunlight streaming through trees, cinematic tones. Captured on a Canon EOS R5 with an 85mm f/1.2 lens.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250920110856-b1.jpg",
     "prompt": "A cozy studio portrait of a man in a knitted sweater, seated on a chair under a warm standing lamp. Soft ambient lighting creates a relaxed and intimate mood. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens, cinematic tones.",
     "model": "seedream4"
@@ -52,11 +57,6 @@
   {
     "image": "./public/images/20250920113637-image.jpg",
     "prompt": "A black-and-white close-up portrait of a smiling man in a striped shirt, leaning forward slightly. Soft studio lighting emphasizes facial texture and natural expression. Captured on a Leica M10 Monochrom with a 50mm f/2 lens.",
-    "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250920104154-generated-image__2_.png",
-    "prompt": "A closer portrait of a casually dressed man sitting outdoors in the rainforest, smiling slightly while reading a book. Background softly blurred with golden sunlight streaming through trees, cinematic tones. Captured on a Canon EOS R5 with an 85mm f/1.2 lens.",
     "model": "seedream4"
   },
   {
