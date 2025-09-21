@@ -10,6 +10,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250921092305-image.jpg",
+    "prompt": "A dynamic shot of a man mid-air on a skateboard, wearing a colorful retro windbreaker and black sneakers. Captured in a skatepark under clear blue skies, with strong backlighting outlining his silhouette. Shot on a Sony Alpha 9 with a 16-35mm f/2.8 lens, sports photography style.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250920104229-generated-image__10_.png",
     "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
     "model": "nanobanana"
@@ -37,11 +42,6 @@
   {
     "image": "./public/images/20250920110856-b1.jpg",
     "prompt": "A cozy studio portrait of a man in a knitted sweater, seated on a chair under a warm standing lamp. Soft ambient lighting creates a relaxed and intimate mood. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens, cinematic tones.",
-    "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250921092305-image.jpg",
-    "prompt": "A dynamic shot of a man mid-air on a skateboard, wearing a colorful retro windbreaker and black sneakers. Captured in a skatepark under clear blue skies, with strong backlighting outlining his silhouette. Shot on a Sony Alpha 9 with a 16-35mm f/2.8 lens, sports photography style.",
     "model": "seedream4"
   },
   {
