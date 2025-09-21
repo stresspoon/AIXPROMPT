@@ -83,5 +83,10 @@
     "image": "./public/images/20250921092357-image.jpg",
     "prompt": "A relaxed portrait of a man in a navy sweatshirt and beige trousers, leaning casually against a concrete wall, laughing openly. Soft natural daylight, minimal urban background. Shot on a Canon EOS R6 with a 50mm f/1.2 lens, lifestyle aesthetic.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250921093059-image.jpg",
+    "prompt": "A candid shot of a man crouching on the beach, wearing a pastel-colored knit sweater and ripped light-wash jeans, white sneakers slightly sandy. Overcast sky with muted soft tones, natural and dreamy vibe. Shot on a Contax T2 35mm film camera with Kodak Portra 400.",
+    "model": "seedream4"
   }
 ]
