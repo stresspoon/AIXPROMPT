@@ -10,6 +10,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920113649-image.jpg",
+    "prompt": "A warm-toned portrait of a man in a white shirt, standing against a softly lit beige background. Golden light highlights his face, cinematic tones. Captured on a Sony Alpha 7R V with an 85mm f/1.4 lens.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250920104154-generated-image__2_.png",
     "prompt": "A closer portrait of a casually dressed man sitting outdoors in the rainforest, smiling slightly while reading a book. Background softly blurred with golden sunlight streaming through trees, cinematic tones. Captured on a Canon EOS R5 with an 85mm f/1.2 lens.",
     "model": "seedream4"
@@ -37,11 +42,6 @@
   {
     "image": "./public/images/20250921092305-image.jpg",
     "prompt": "A dynamic shot of a man mid-air on a skateboard, wearing a colorful retro windbreaker and black sneakers. Captured in a skatepark under clear blue skies, with strong backlighting outlining his silhouette. Shot on a Sony Alpha 9 with a 16-35mm f/2.8 lens, sports photography style.",
-    "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250920113649-image.jpg",
-    "prompt": "A warm-toned portrait of a man in a white shirt, standing against a softly lit beige background. Golden light highlights his face, cinematic tones. Captured on a Sony Alpha 7R V with an 85mm f/1.4 lens.",
     "model": "seedream4"
   },
   {
