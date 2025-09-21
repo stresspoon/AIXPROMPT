@@ -281,6 +281,11 @@
             <button class="ag-tool del" data-action="delete">삭제</button>
           </div>
         </div>
+        <div class="ag-body">
+          ${item.title ? `<div class=\"ag-title\">${item.title}</div>` : ''}
+          <div class="ag-prompt">${(item.prompt || '').replace(/</g,'&lt;').slice(0,140)}</div>
+        </div>`;
+
       // drag handlers
       el.addEventListener('dragstart', (e)=>{ dragSrcIndex = index; if(e.dataTransfer){ e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain', ''); } el.classList.add('dragging'); });
       el.addEventListener('dragend', ()=>{ el.classList.remove('dragging','drag-over-before','drag-over-after'); });
@@ -312,11 +317,6 @@
         const r = await fetch('/api/reorder-cards', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ order: current }) });
         if(!r.ok){ alert('순서 저장 실패'); loadGrid(); }
       });
-        <div class="ag-body">
-          ${item.title ? `<div class=\"ag-title\">${item.title}</div>` : ''}
-          <div class="ag-prompt">${(item.prompt || '').replace(/</g,'&lt;').slice(0,140)}</div>
-          
-        </div>`;
       el.querySelector('[data-action="delete"]').addEventListener('click', async (ev)=>{
         ev.stopPropagation();
         const token = getAuth(); if(!token){ alert('로그인이 필요합니다.'); return; }
