@@ -68,5 +68,10 @@
     "image": "./public/images/20250921091228-image.jpg",
     "prompt": "A dramatic close-up portrait of a man looking upwards with a subtle smile, set against a deep burgundy background. Strong directional lighting emphasizes skin texture and facial contours, cinematic tones. Captured on a Leica SL2 with a 50mm f/1.4 lens.",
     "model": "nanobanana"
+  },
+  {
+    "image": "./public/images/20250921092226-image.jpg",
+    "prompt": "A candid shot of a man in a graphic t-shirt and cargo pants, holding a coffee cup with a bright smile. Sunlight streams through the window, casting warm highlights and soft shadows. Shot on a Leica Q2 with a 28mm f/1.7 lens, cinematic tones.",
+    "model": "nanobanana"
   }
 ]
