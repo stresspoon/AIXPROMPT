@@ -5,6 +5,11 @@
     "model": "nanobanana"
   },
   {
+    "image": "./public/images/20250920113622-image.jpg",
+    "prompt": "A stylish studio portrait of a man in a black suit and sunglasses, leaning casually against a wall while holding a coffee cup. Background lit with dramatic purple and amber lighting, creating a fashion editorial vibe. Captured on a Canon EOS R5 with a 35mm f/1.4 lens.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250920104253-generated-image__11_.png",
     "prompt": "A candid medium shot of a casually dressed man sitting at a desk, leaning forward slightly and smiling warmly while engaging with a client opposite him. The client is blurred in the foreground, emphasizing consultation focus. Captured on a Canon EOS R6 with a 50mm f/1.2 lens, natural daylight through windows.",
     "model": "seedream4"
@@ -32,11 +37,6 @@
   {
     "image": "./public/images/20250920110856-b1.jpg",
     "prompt": "A cozy studio portrait of a man in a knitted sweater, seated on a chair under a warm standing lamp. Soft ambient lighting creates a relaxed and intimate mood. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens, cinematic tones.",
-    "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250920113622-image.jpg",
-    "prompt": "A stylish studio portrait of a man in a black suit and sunglasses, leaning casually against a wall while holding a coffee cup. Background lit with dramatic purple and amber lighting, creating a fashion editorial vibe. Captured on a Canon EOS R5 with a 35mm f/1.4 lens.",
     "model": "seedream4"
   },
   {
