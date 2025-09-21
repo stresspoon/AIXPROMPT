@@ -10,6 +10,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920110856-b1.jpg",
+    "prompt": "A cozy studio portrait of a man in a knitted sweater, seated on a chair under a warm standing lamp. Soft ambient lighting creates a relaxed and intimate mood. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens, cinematic tones.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250921092305-image.jpg",
     "prompt": "A dynamic shot of a man mid-air on a skateboard, wearing a colorful retro windbreaker and black sneakers. Captured in a skatepark under clear blue skies, with strong backlighting outlining his silhouette. Shot on a Sony Alpha 9 with a 16-35mm f/2.8 lens, sports photography style.",
     "model": "seedream4"
@@ -53,11 +58,6 @@
     "image": "./public/images/20250920094306-Gemini_Generated_Image_ef3mvwef3mvwef3m.png",
     "prompt": "A wide shot of a modern conference room with large windows, showing a casually dressed man actively engaging in discussion at the table. Several colleagues sit around, some blurred, creating a sense of group interaction. Natural office lighting, cinematic tones. Captured on a Sony Alpha 7 IV with a 24-70mm f/2.8 lens at 35mm.",
     "model": "nanobanana"
-  },
-  {
-    "image": "./public/images/20250920110856-b1.jpg",
-    "prompt": "A cozy studio portrait of a man in a knitted sweater, seated on a chair under a warm standing lamp. Soft ambient lighting creates a relaxed and intimate mood. Captured on a Fujifilm GFX100 with a 63mm f/2.8 lens, cinematic tones.",
-    "model": "seedream4"
   },
   {
     "image": "./public/images/20250921091148-image.jpg",
