@@ -108,5 +108,10 @@
     "image": "./public/images/20250921204316-image.jpg",
     "prompt": "A confident street-style shot of a man crossing a busy New York street, wearing a gray bomber jacket, white t-shirt, and black trousers. Yellow taxis and skyscrapers in the background, urban fashion aesthetic. Shot on a Leica SL2 with a 35mm Summilux lens.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250921204403-image.jpg",
+    "prompt": "A candid shot of a man in a cream turtleneck sweater and gray trousers, sitting on a wooden bench in a modern art gallery. Minimal interior with abstract colorful artwork on the wall. Shot on a Hasselblad X1D II with an 80mm lens, soft natural lighting.",
+    "model": "seedream4"
   }
 ]
