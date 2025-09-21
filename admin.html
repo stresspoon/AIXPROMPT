@@ -43,6 +43,7 @@
     .ag-card.dragging{ opacity:.6 }
     .ag-card.drag-over-before::before{ content:""; position:absolute; left:0; right:0; top:0; height:4px; background:var(--accent) }
     .ag-card.drag-over-after::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:4px; background:var(--accent) }
+    .ag-placeholder{ grid-column: span 12; border:2px dashed var(--accent); border-radius:var(--radius); background:transparent }
     .ag-badge{ position:absolute; left:14px; top:14px; padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.55); color:#fff; font-size:12px; backdrop-filter: blur(4px); border:1px solid rgba(255,255,255,.12) }
     .ag-body{ padding:12px; display:flex; flex-direction:column; gap:8px }
     .ag-title{ font-size:14px; font-weight:700 }
@@ -266,7 +267,7 @@
     });
 
     const ADMIN_GRID = document.getElementById('adminGrid');
-    let dragSrcIndex = null;
+    let dragSrcIndex = null; let placeholder = null;
     function createAdminCard(item, index){
       const el = document.createElement('article');
       el.className = 'ag-card';
@@ -287,14 +288,19 @@
         </div>`;
 
       // drag handlers
-      el.addEventListener('dragstart', (e)=>{ dragSrcIndex = index; if(e.dataTransfer){ e.dataTransfer.effectAllowed='move'; e.dataTransfer.setDragImage(new Image(),0,0); } el.classList.add('dragging'); });
-      el.addEventListener('dragend', ()=>{ el.classList.remove('dragging','drag-over-before','drag-over-after'); });
+      el.addEventListener('dragstart', (e)=>{ dragSrcIndex = index; if(e.dataTransfer){ e.dataTransfer.effectAllowed='move'; e.dataTransfer.setDragImage(new Image(),0,0); } el.classList.add('dragging');
+        // create placeholder
+        placeholder = document.createElement('div'); placeholder.className='ag-placeholder';
+        ADMIN_GRID.insertBefore(placeholder, el.nextSibling);
+      });
+      el.addEventListener('dragend', ()=>{ el.classList.remove('dragging','drag-over-before','drag-over-after'); if(placeholder){ placeholder.remove(); placeholder=null; } });
       el.addEventListener('dragover', (e)=>{ e.preventDefault();
         const rect = el.getBoundingClientRect();
         const before = (e.clientY - rect.top) < rect.height/2;
         el.classList.toggle('drag-over-before', before);
         el.classList.toggle('drag-over-after', !before);
         if(e.dataTransfer) e.dataTransfer.dropEffect='move';
+        if(placeholder){ ADMIN_GRID.insertBefore(placeholder, before ? el : el.nextSibling); }
       });
       el.addEventListener('dragleave', ()=>{ el.classList.remove('drag-over-before','drag-over-after'); });
       el.addEventListener('drop', async (e)=>{
@@ -305,14 +311,18 @@
         if(src === dst || src == null){ el.classList.remove('drag-over-before','drag-over-after'); return; }
         const before = el.classList.contains('drag-over-before');
         // Build new order
-        const current = Array.from(ADMIN_GRID.querySelectorAll('.ag-card')).map((_,i)=> i+1);
+        const cards = Array.from(ADMIN_GRID.querySelectorAll('.ag-card'));
+        const current = cards.map((_,i)=> i+1);
         const moved = current.splice(src,1)[0];
-        current.splice(before?dst:dst+1,0,moved);
+        const phIndex = Array.prototype.indexOf.call(ADMIN_GRID.children, placeholder);
+        const targetIndex = Array.prototype.indexOf.call(ADMIN_GRID.children, el) + (before?0:1);
+        const to = phIndex !== -1 ? phIndex : targetIndex;
+        current.splice(to,0,moved);
         // Optimistic UI: reorder DOM
         const srcEl = ADMIN_GRID.querySelectorAll('.ag-card')[src];
-        const dstEl = ADMIN_GRID.querySelectorAll('.ag-card')[dst];
-        ADMIN_GRID.insertBefore(srcEl, before ? dstEl : dstEl.nextSibling);
+        ADMIN_GRID.insertBefore(srcEl, placeholder ? placeholder : (before ? el : el.nextSibling));
         el.classList.remove('drag-over-before','drag-over-after');
+        if(placeholder){ placeholder.remove(); placeholder=null; }
         // Persist
         const r = await fetch('/api/reorder-cards', { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Basic '+token }, body: JSON.stringify({ order: current }) });
         if(!r.ok){ alert('순서 저장 실패'); loadGrid(); }
