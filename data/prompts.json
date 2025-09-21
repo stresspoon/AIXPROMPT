@@ -5,6 +5,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920101914-generated-image__1_.png",
+    "prompt": "A candid portrait of a man sitting on a wooden chair in the rainforest, dressed casually, reading a book with focus. Surrounded by lush greenery, soft diffused sunlight filters through the canopy. Editorial style with natural cinematic tones. Captured on a Canon EOS R5 with a 50mm f/1.2 lens.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250920104154-generated-image__2_.png",
     "prompt": "A closer portrait of a casually dressed man sitting outdoors in the rainforest, smiling slightly while reading a book. Background softly blurred with golden sunlight streaming through trees, cinematic tones. Captured on a Canon EOS R5 with an 85mm f/1.2 lens.",
     "model": "seedream4"
@@ -43,11 +48,6 @@
     "image": "./public/images/20250920094306-Gemini_Generated_Image_ef3mvwef3mvwef3m.png",
     "prompt": "A wide shot of a modern conference room with large windows, showing a casually dressed man actively engaging in discussion at the table. Several colleagues sit around, some blurred, creating a sense of group interaction. Natural office lighting, cinematic tones. Captured on a Sony Alpha 7 IV with a 24-70mm f/2.8 lens at 35mm.",
     "model": "nanobanana"
-  },
-  {
-    "image": "./public/images/20250920101914-generated-image__1_.png",
-    "prompt": "A candid portrait of a man sitting on a wooden chair in the rainforest, dressed casually, reading a book with focus. Surrounded by lush greenery, soft diffused sunlight filters through the canopy. Editorial style with natural cinematic tones. Captured on a Canon EOS R5 with a 50mm f/1.2 lens.",
-    "model": "seedream4"
   },
   {
     "image": "./public/images/20250920110856-b1.jpg",
