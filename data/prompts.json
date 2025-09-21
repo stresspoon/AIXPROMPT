@@ -103,5 +103,10 @@
     "image": "./public/images/20250921204151-image.jpg",
     "prompt": "A moody urban portrait of a man wearing a green bomber jacket and black beanie, hands in pockets, standing on a subway platform with a train passing by in motion blur. Shot on a Nikon Z9 with a 24mm f/1.8 lens, cinematic night lighting.",
     "model": "seedream4"
+  },
+  {
+    "image": "./public/images/20250921204316-image.jpg",
+    "prompt": "A confident street-style shot of a man crossing a busy New York street, wearing a gray bomber jacket, white t-shirt, and black trousers. Yellow taxis and skyscrapers in the background, urban fashion aesthetic. Shot on a Leica SL2 with a 35mm Summilux lens.",
+    "model": "seedream4"
   }
 ]
