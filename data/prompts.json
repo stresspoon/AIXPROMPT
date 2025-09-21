@@ -10,6 +10,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920104229-generated-image__10_.png",
+    "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
+    "model": "nanobanana"
+  },
+  {
     "image": "./public/images/20250921092357-image.jpg",
     "prompt": "A relaxed portrait of a man in a navy sweatshirt and beige trousers, leaning casually against a concrete wall, laughing openly. Soft natural daylight, minimal urban background. Shot on a Canon EOS R6 with a 50mm f/1.2 lens, lifestyle aesthetic.",
     "model": "seedream4"
@@ -48,11 +53,6 @@
     "image": "./public/images/20250920104154-generated-image__2_.png",
     "prompt": "A closer portrait of a casually dressed man sitting outdoors in the rainforest, smiling slightly while reading a book. Background softly blurred with golden sunlight streaming through trees, cinematic tones. Captured on a Canon EOS R5 with an 85mm f/1.2 lens.",
     "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250920104229-generated-image__10_.png",
-    "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
-    "model": "nanobanana"
   },
   {
     "image": "./public/images/20250920104317-generated-image__12_.png",
