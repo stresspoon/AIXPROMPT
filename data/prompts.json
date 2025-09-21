@@ -15,6 +15,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250920104253-generated-image__11_.png",
+    "prompt": "A candid medium shot of a casually dressed man sitting at a desk, leaning forward slightly and smiling warmly while engaging with a client opposite him. The client is blurred in the foreground, emphasizing consultation focus. Captured on a Canon EOS R6 with a 50mm f/1.2 lens, natural daylight through windows.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250921092357-image.jpg",
     "prompt": "A relaxed portrait of a man in a navy sweatshirt and beige trousers, leaning casually against a concrete wall, laughing openly. Soft natural daylight, minimal urban background. Shot on a Canon EOS R6 with a 50mm f/1.2 lens, lifestyle aesthetic.",
     "model": "seedream4"
@@ -53,11 +58,6 @@
     "image": "./public/images/20250920104229-generated-image__10_.png",
     "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
     "model": "nanobanana"
-  },
-  {
-    "image": "./public/images/20250920104253-generated-image__11_.png",
-    "prompt": "A candid medium shot of a casually dressed man sitting at a desk, leaning forward slightly and smiling warmly while engaging with a client opposite him. The client is blurred in the foreground, emphasizing consultation focus. Captured on a Canon EOS R6 with a 50mm f/1.2 lens, natural daylight through windows.",
-    "model": "seedream4"
   },
   {
     "image": "./public/images/20250921091148-image.jpg",
