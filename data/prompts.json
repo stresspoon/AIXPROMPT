@@ -20,6 +20,11 @@
     "model": "seedream4"
   },
   {
+    "image": "./public/images/20250922083549-image.jpg",
+    "prompt": "A striking, modern advertisement featuring a handsome male (my face 100% match), with short, stylish hair, sitting comfortably in a vibrant blue, plush, rounded armchair. He is dressed in a clean, semi-formal outfit: a crisp white button-up shirt tucked into tailored navy trousers, paired with a slim belt and polished neutral-colored shoes. He is looking directly at the viewer with a friendly, confident smile. The backdrop is blue, with a large, stylized white letter \"MF\" subtly placed behind him. There are also faint, placeholder text elements in the top left and top right corners of the image, characteristic of a magazine or product advertisement.",
+    "model": "seedream4"
+  },
+  {
     "image": "./public/images/20250920104229-generated-image__10_.png",
     "prompt": "A medium-wide shot of a modern office meeting room, showing a casually dressed man smiling while conversing with a colleague across the table. Other participants blurred in the background, professional yet friendly atmosphere. Captured on a Sony Alpha 7 IV with a 35mm f/1.4 lens, natural lighting.",
     "model": "nanobanana"
@@ -112,11 +117,6 @@
   {
     "image": "./public/images/20250921204316-image.jpg",
     "prompt": "A confident street-style shot of a man crossing a busy New York street, wearing a gray bomber jacket, white t-shirt, and black trousers. Yellow taxis and skyscrapers in the background, urban fashion aesthetic. Shot on a Leica SL2 with a 35mm Summilux lens.",
-    "model": "seedream4"
-  },
-  {
-    "image": "./public/images/20250922083549-image.jpg",
-    "prompt": "A striking, modern advertisement featuring a handsome male (my face 100% match), with short, stylish hair, sitting comfortably in a vibrant blue, plush, rounded armchair. He is dressed in a clean, semi-formal outfit: a crisp white button-up shirt tucked into tailored navy trousers, paired with a slim belt and polished neutral-colored shoes. He is looking directly at the viewer with a friendly, confident smile. The backdrop is blue, with a large, stylized white letter \"MF\" subtly placed behind him. There are also faint, placeholder text elements in the top left and top right corners of the image, characteristic of a magazine or product advertisement.",
     "model": "seedream4"
   }
 ]
